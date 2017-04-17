@@ -4,6 +4,7 @@
 /[Bb]uild/
 /[Bb]uilds/
 /orbis_bin/
+/orbis/
 /Assets/AssetStoreTools*
 
 # Visual Studio 2015 cache directory
