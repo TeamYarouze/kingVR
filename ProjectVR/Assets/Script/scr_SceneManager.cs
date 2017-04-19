@@ -70,26 +70,32 @@ public class scr_SceneManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
+		mainCamera = GameObject.Find("SocialScreenCamera").GetComponent<Camera>();
         if( !mainCamera )
         {
             Debug.Log("MainCamera Object Not Find\n");
         }
+
         freeLookCamera = GameObject.Find("FreeCamera").GetComponent<Camera>(); 
         if( !freeLookCamera )
         {
             Debug.Log("FreeLookCamera Object Not Find\n");
         }
+        else
+        {
+            freeLookCamera.enabled = false;
+        }
+
         fpsCamera = GameObject.Find("FPSCamera").GetComponent<Camera>();
         if( !fpsCamera )
         {
             Debug.Log("FPS Camera Object Not Find\n");
         }
-        
+                
         bSetupHMDDevice = false;
         m_vrSettintStep = -1;
 //        EnableMainCamera();
-        EnableFPSCamera();
+//        EnableFPSCamera();
 
         if( VRSettings.enabled )
         {
@@ -115,6 +121,11 @@ public class scr_SceneManager : MonoBehaviour {
         if( Input.GetButtonDown("R1") )
         {
             ProcSetupVRMode();
+        }
+
+        if( VRSettings.enabled && Input.GetButtonDown("Triangle") )
+        {
+            VRManager.instance.ToggleHMDViewOnMonitor();
         }
 
 		if( Input.GetKeyDown(KeyCode.C) )
@@ -161,6 +172,8 @@ public class scr_SceneManager : MonoBehaviour {
             {
                 cameraStr += "Invalid\n";
             }
+
+            cameraStr += "Show Hmd" + ((VRSettings.showDeviceView)?"ON":"OFF");
             scr_GUIText.instance.AddText(cameraStr);
         }
     }

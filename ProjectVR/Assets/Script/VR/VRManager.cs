@@ -8,10 +8,11 @@ using UnityEngine.PS4;
 
 public class VRManager : MonoBehaviour
 {
-    public float renderScale = 1.4f; // 1.4 is Sony's recommended scale for PlayStation VR
-    public bool showHmdViewOnMonitor = true; // Set this to 'false' to use the monitor/display as the Social Screen
-    private static VRManager _instance;
+    private float renderScale = 1.4f; // 1.4 is Sony's recommended scale for PlayStation VR
 
+    private bool showHmdViewOnMonitor = true; // Set this to 'false' to use the monitor/display as the Social Screen
+
+    private static VRManager _instance;
     public static VRManager instance
     {
         get

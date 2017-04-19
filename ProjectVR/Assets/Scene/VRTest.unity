@@ -466,21 +466,13 @@ GameObject:
   - component: {fileID: 1827480360}
   - component: {fileID: 1827480359}
   - component: {fileID: 1827480358}
-  - component: {fileID: 1827480357}
   m_Layer: 0
-  m_Name: Main Camera
+  m_Name: SocialScreenCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1827480357
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1827480356}
-  m_Enabled: 1
 --- !u!124 &1827480358
 Behaviour:
   m_ObjectHideFlags: 0
@@ -523,7 +515,7 @@ Camera:
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
-  m_TargetEye: 3
+  m_TargetEye: 0
   m_HDR: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -584,6 +576,21 @@ Prefab:
     - target: {fileID: 1528836488284914, guid: 91396cfd11709d44c9a65169f3f6f888, type: 2}
       propertyPath: m_TagString
       value: MainCamera
+      objectReference: {fileID: 0}
+    - target: {fileID: 20583220874769324, guid: 91396cfd11709d44c9a65169f3f6f888,
+        type: 2}
+      propertyPath: m_HDR
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 20583220874769324, guid: 91396cfd11709d44c9a65169f3f6f888,
+        type: 2}
+      propertyPath: m_OcclusionCulling
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 20583220874769324, guid: 91396cfd11709d44c9a65169f3f6f888,
+        type: 2}
+      propertyPath: m_Depth
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 91396cfd11709d44c9a65169f3f6f888, type: 2}
