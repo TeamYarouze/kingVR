@@ -57,12 +57,14 @@ public class scr_CameraTPS : MonoBehaviour {
 
     void LateUpdate()
     {
+        /*
         {
             string infoStr = "";
             infoStr += "Angle Yaw : " + angle_yaw + "\n";
             infoStr += "Angle Pitch : " + angle_pitch + "\n";
             scr_GUIText.instance.AddText(infoStr);
         }
+        */
     }
 
     //-----------------------------------------------------------------

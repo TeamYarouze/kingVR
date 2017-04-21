@@ -95,7 +95,7 @@ public class scr_SceneManager : MonoBehaviour {
         bSetupHMDDevice = false;
         m_vrSettintStep = -1;
 //        EnableMainCamera();
-//        EnableFPSCamera();
+        EnableFPSCamera();
 
         if( VRSettings.enabled )
         {
@@ -173,7 +173,7 @@ public class scr_SceneManager : MonoBehaviour {
                 cameraStr += "Invalid\n";
             }
 
-            cameraStr += "Show Hmd" + ((VRSettings.showDeviceView)?"ON":"OFF");
+            cameraStr += "Show Hmd" + ((VRSettings.showDeviceView)?"ON":"OFF") + "\n";
             scr_GUIText.instance.AddText(cameraStr);
         }
     }

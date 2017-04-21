@@ -33,6 +33,8 @@ public class scr_CameraFPS : MonoBehaviour {
         offsetHeight = 2.0f;
         offsetForward = 2.0f;
 
+        angle_yaw = 270.0f;
+        angle_pitch = 0.0f;
 	}
 	
 	// Update is called once per frame
@@ -48,6 +50,13 @@ public class scr_CameraFPS : MonoBehaviour {
             float rv = Input.GetAxis("Vertical2");
 
             RotateCamera(rv, rh);
+        }
+
+        {
+            string infoStr = "";
+            infoStr += "Angle Yaw : " + angle_yaw + "\n";
+            infoStr += "Angle Pitch : " + angle_pitch + "\n";
+            scr_GUIText.instance.AddText(infoStr);
         }
     }
 
@@ -73,7 +82,23 @@ public class scr_CameraFPS : MonoBehaviour {
     public void RotateCamera(float v, float h)
     {
         angle_yaw += h * ROTATE_UNIT_ANGLE;
+        if( angle_yaw > 360.0f )
+        {
+            angle_yaw -= 360.0f;
+        }
+        if( angle_yaw < 0 )
+        {
+            angle_yaw += 360.0f;
+        }
         angle_pitch += v * ROTATE_UNIT_ANGLE;
+        if( angle_pitch > 360.0f )
+        {
+            angle_pitch -= 360.0f;
+        }
+        if( angle_pitch < 0.0f )
+        {
+            angle_pitch += 360.0f;
+        }
 
         totalRotation = Quaternion.Euler(angle_pitch, angle_yaw, 0.0f);
         m_camera.transform.rotation = totalRotation;

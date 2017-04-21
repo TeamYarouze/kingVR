@@ -32,6 +32,7 @@ public class scr_VRCameraRoot : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+        /*
         if( VRSettings.enabled )
         {
             Quaternion trackingRot = InputTracking.GetLocalRotation(VRNode.CenterEye);
@@ -42,6 +43,7 @@ public class scr_VRCameraRoot : MonoBehaviour {
             
             forward = Vector3.Normalize(transformedPos);
         }
+        */
 	}
 
     void LateUpdate()

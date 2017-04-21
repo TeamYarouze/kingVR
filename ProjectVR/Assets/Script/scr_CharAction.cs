@@ -33,6 +33,8 @@ public class scr_CharAction : MonoBehaviour {
 
         // シーンマネージャーの保存
         m_SceneManager = GameObject.Find("SceneManager").GetComponent<scr_SceneManager>();
+
+        
 	}
 	
 	// Update is called once per frame
@@ -62,6 +64,7 @@ public class scr_CharAction : MonoBehaviour {
             ExecMoveTPS(lh, lv);
         }
     }
+
 
     // キャラの移動処理 TPS
     void ExecMoveTPS(float h, float v)
@@ -99,6 +102,13 @@ public class scr_CharAction : MonoBehaviour {
         if( m_SceneManager.CameraType == scr_SceneManager.UseCameraType.USE_CAMERA_FPS )
         {
             RotateChar();
+        }
+
+        {
+            string strInfo = "King:";
+            strInfo += transform.rotation.ToString();
+            strInfo += "\n";
+            scr_GUIText.instance.AddText(strInfo);
         }
     }
 
