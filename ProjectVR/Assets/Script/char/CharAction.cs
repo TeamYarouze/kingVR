@@ -25,8 +25,6 @@ public class CharAction : MonoBehaviour {
     private Camera m_fpsCamera;
     private GameObject m_VRCameraRoot;
 
-    private scr_SceneManager m_SceneManager = null;
-
     private ACTION_MODE m_actMode;
 
     // 点火回数
@@ -68,7 +66,7 @@ public class CharAction : MonoBehaviour {
 	void Start () {
         // RigidBodyの取得
         rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = false;
+        rb.freezeRotation = true;
         // Animatorの取得
  //       anim = GetComponent<Animator>();
 
@@ -77,28 +75,20 @@ public class CharAction : MonoBehaviour {
         m_VRCameraRoot = GameObject.Find("VRCameraRoot");
         yaw = 0.0f;
 
-        // シーンマネージャーの保存
-//        m_SceneManager = GameObject.Find("SceneManager").GetComponent<scr_SceneManager>();
-//        SetMoveMode(ACTION_MODE.ACT_MODE_BLOWOFF);
-
         m_vectorToMove = Vector3.zero;
 
         bBlowOff = false;
         m_baseGravity = BASE_GRAVITY;
         // 試しにRocketをセット
         EquipItem(GameObject.Find("Rocket"));
+
+        SetMoveMode(ACTION_MODE.ACT_MODE_BLOWOFF);
 	}
 	
 	// Update is called once per frame
     //---------------------------------------------------------------
     //---------------------------------------------------------------
 	void Update () {
-
-        if( !m_SceneManager )
-        {
-            m_SceneManager = GameObject.Find("SceneManager").GetComponent<scr_SceneManager>();
-            SetMoveMode(ACTION_MODE.ACT_MODE_BLOWOFF);
-        }
 
         m_baseGravity = BASE_GRAVITY;
 
@@ -134,12 +124,12 @@ public class CharAction : MonoBehaviour {
         // 自由歩行
         case ACTION_MODE.ACT_MODE_FREEWALK:
             // FPS風移動
-            if( m_SceneManager.CameraType == scr_SceneManager.UseCameraType.USE_CAMERA_FPS )
+            if( scr_SceneManager.instance.CameraType == scr_SceneManager.UseCameraType.USE_CAMERA_FPS )
             {
                 ExecMoveFPS(lh, lv);
             }
             // TPS風移動
-            else if( m_SceneManager.CameraType == scr_SceneManager.UseCameraType.USE_CAMERA_FREELOOK )
+            else if( scr_SceneManager.instance.CameraType == scr_SceneManager.UseCameraType.USE_CAMERA_FREELOOK )
             {
                 ExecMoveTPS(lh, lv);
             }
@@ -198,7 +188,7 @@ public class CharAction : MonoBehaviour {
     void LateUpdate()
     {
         // FPSカメラの時のキャラの向き制御
-        if( m_SceneManager.CameraType == scr_SceneManager.UseCameraType.USE_CAMERA_FPS )
+        if( scr_SceneManager.instance.CameraType == scr_SceneManager.UseCameraType.USE_CAMERA_FPS )
         {
             RotateChar();
         }
@@ -347,15 +337,8 @@ public class CharAction : MonoBehaviour {
     //---------------------------------------------------------------
     public void SetMoveMode(ACTION_MODE actMode)
     {
-        if( !m_SceneManager ) return;
 
         m_actMode = actMode;
-        /*
-        if( actMode == ACTION_MODE.ACT_MODE_BLOWOFF )
-        {
-            m_SceneManager.SetCameraMode(scr_SceneManager.UseCameraType.USE_CAMERA_FPS);
-        }
-        */
     }
 
     //---------------------------------------------------------------
@@ -375,15 +358,15 @@ public class CharAction : MonoBehaviour {
 
             if( m_actMode == ACTION_MODE.ACT_MODE_BLOWOFF )
             {
-                m_SceneManager.SetCameraMode(scr_SceneManager.UseCameraType.USE_CAMERA_FPS);
+                scr_SceneManager.instance.SetCameraMode(scr_SceneManager.UseCameraType.USE_CAMERA_FPS);
             }
             else if( m_actMode == ACTION_MODE.ACT_MODE_FREEWALK )
             {
-                m_SceneManager.SetCameraMode(scr_SceneManager.UseCameraType.USE_CAMERA_FREELOOK);
+                scr_SceneManager.instance.SetCameraMode(scr_SceneManager.UseCameraType.USE_CAMERA_FREELOOK);
             }
             else if( m_actMode == ACTION_MODE.ACT_MOVE_TPS_BLOWOFF )
             {
-                m_SceneManager.SetCameraMode(scr_SceneManager.UseCameraType.USE_CAMERA_FREELOOK);
+                scr_SceneManager.instance.SetCameraMode(scr_SceneManager.UseCameraType.USE_CAMERA_FREELOOK);
             }
         }
     }
