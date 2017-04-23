@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class ItemRocket : ItemBase {
 
-    public float RocketAngle = 70.0f;
-    public float RocketPower = 0.4f;
+    public float RocketAngle = 60.0f;
+    public float RocketPower = 100.0f;
+    public float RocketGravity = 20.0f;
  
 	// Use this for initialization
 	new public void Start () {
         m_Angle = RocketAngle;
         m_Power = RocketPower;
+        m_Gravity = RocketGravity;
 	}
 	
 	// Update is called once per frame
@@ -44,12 +46,14 @@ public class ItemRocket : ItemBase {
     //---------------------------------------------------------------
     new public bool OnFire()
     {
+        
+
         if( Input.GetButtonDown("Circle") )
         {
             m_Angle = RocketAngle;
             m_Power = RocketPower;
-
-            objScript.SetupBlowoffParame(m_Angle, m_Power, 0.0f);
+            objScript.SetupBlowoffParam(m_Angle, m_Power, ForceMode.VelocityChange);
+            m_state = EItemUseState.ITEM_STAT_USING;
             return true;
         }
 

@@ -9,6 +9,11 @@ public class ItemBase : MonoBehaviour {
 
     protected float m_Angle;
     protected float m_Power;
+    protected float m_Gravity;
+    public float Gravity
+    {
+        get { return m_Gravity; }
+    }
     
     private int m_ID;
     public int ID
@@ -17,10 +22,24 @@ public class ItemBase : MonoBehaviour {
         get { return m_ID; }
     }
 
+    public enum EItemUseState
+    {
+        ITEM_STAT_READY,    // 使用前
+        ITEM_STAT_USING,    // 使用中
+        ITEM_STAT_DONE,     // 使用済み
+        ITEM_STAT_MAX
+    };
+    protected EItemUseState m_state;
+    public EItemUseState State
+    {
+        get { return m_state; }
+    }
+
 	// Use this for initialization
 	public void Start () {
 		attachedObject = null;
         objScript = null;
+        m_state = EItemUseState.ITEM_STAT_READY;
 	}
 	
 	// Update is called once per frame
