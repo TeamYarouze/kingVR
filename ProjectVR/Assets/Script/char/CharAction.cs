@@ -35,12 +35,11 @@ public class CharAction : MonoBehaviour {
     private int m_equipNum;                         // 装備しているアイテムの数
 
     private float m_gravity;                        // 重力
-    private float m_baseGravity;
     private float m_power;                          // 前に進む力
-//    private float m_angle;                          // 吹っ飛ぶ角度
+    private float m_angle;                          // 吹っ飛ぶ角度
     private Vector3 m_vectorToMove;                 // 移動ベクトル
 
-    public float BASE_GRAVITY = 0.1f;
+    public float BASE_GRAVITY = 10.0f;
 
     public float BlowoffPower
     {
@@ -67,18 +66,18 @@ public class CharAction : MonoBehaviour {
         // RigidBodyの取得
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
-        // Animatorの取得
- //       anim = GetComponent<Animator>();
+        rb.useGravity = false;
 
         m_camera = GameObject.Find("FreeCamera").GetComponent<Camera>();
         m_fpsCamera = GameObject.Find("FPSCamera").GetComponent<Camera>();
         m_VRCameraRoot = GameObject.Find("VRCameraRoot");
         yaw = 0.0f;
 
+        m_gravity = BASE_GRAVITY;
+
         m_vectorToMove = Vector3.zero;
 
         bBlowOff = false;
-        m_baseGravity = BASE_GRAVITY;
         // 試しにRocketをセット
         EquipItem(GameObject.Find("Rocket"));
 
@@ -88,11 +87,13 @@ public class CharAction : MonoBehaviour {
 	// Update is called once per frame
     //---------------------------------------------------------------
     //---------------------------------------------------------------
-	void Update () {
-
-        m_baseGravity = BASE_GRAVITY;
+	void Update ()
+    {
 
         ChangeMoveMode();
+
+        // リセット処理
+        ResetPosition();
 	}
 
     //---------------------------------------------------------------
@@ -117,6 +118,8 @@ public class CharAction : MonoBehaviour {
         {
         // 吹っ飛ぶ動作
         case ACTION_MODE.ACT_MODE_BLOWOFF:
+
+
 
             ExecBlowoff();
 
@@ -187,25 +190,33 @@ public class CharAction : MonoBehaviour {
 
     void LateUpdate()
     {
+        /*
         // FPSカメラの時のキャラの向き制御
         if( scr_SceneManager.instance.CameraType == scr_SceneManager.UseCameraType.USE_CAMERA_FPS )
         {
             RotateChar();
         }
+        */
 
         {
-            string infoStr = "";
+            string infoStr = "King Param\n";
+            infoStr += "Gravity:" + m_gravity + "\n";
             infoStr += "BlowoffVector: " + m_vectorToMove.ToString() + "\n";
-            infoStr += "Action Mode: " + m_actMode + "\n";
+            infoStr += "Action Mode: " + m_actMode + "BlowOff:" + bBlowOff + "\n";
             scr_GUIText.instance.AddText(infoStr);
         }
     }
 
+    //---------------------------------------------------------------
+    /*
+        @brief      衝突検知の瞬間
+    */
+    //---------------------------------------------------------------
     void OnCollisionEnter(Collision collision)
     {
         bBlowOff = false;
         m_vectorToMove = Vector3.zero;
-        m_gravity = 0.0f;
+        rb.AddForce(m_vectorToMove, ForceMode.VelocityChange);
     }
 
     //---------------------------------------------------------------
@@ -215,22 +226,10 @@ public class CharAction : MonoBehaviour {
     //---------------------------------------------------------------
     void ExecBlowoff()
     {
-        
-        Vector3 oldPos = transform.position;
-        Vector3 position = oldPos + m_vectorToMove;
+        // 加速度の適用
 
-        if( position.y < 0.0f )
-        {
-            position.y = 0.0f;
-            m_vectorToMove = Vector3.zero;
-        }
-
-        transform.position = position;
-        // 重力を適用
-        if( bBlowOff )
-        {
-            m_vectorToMove.y -= (m_baseGravity + m_gravity);
-        }
+        // 重力の適用
+        ApplyGravity();
     }
 
     //---------------------------------------------------------------
@@ -238,7 +237,7 @@ public class CharAction : MonoBehaviour {
         @brief      ぶっ飛ぶ設定
     */
     //---------------------------------------------------------------
-    public void SetupBlowoffParame(float angle, float power, float gravity)
+    public void SetupBlowoffParam(float angle, float power, ForceMode mode)
     {
         Vector3 vForward = Vector3.Normalize(transform.forward);
 
@@ -248,20 +247,20 @@ public class CharAction : MonoBehaviour {
         m_vectorToMove *= power;
 
         m_power = power;
-//        m_angle = angle;
-        m_gravity = gravity;
 
         bBlowOff = true;
+
+        rb.AddForce(m_vectorToMove, mode);
     }
 
     //---------------------------------------------------------------
     /*
-        @brief      重力の設定
+        @brief      重力の適用
     */
     //---------------------------------------------------------------
-    public void SetGravity(float g)
+    private void ApplyGravity()
     {
-        m_gravity = g;
+        rb.AddForce(0.0f, -m_gravity, 0.0f, ForceMode.Acceleration);
     }
 
     //---------------------------------------------------------------
@@ -299,6 +298,9 @@ public class CharAction : MonoBehaviour {
         m_arrayEquipItem[m_equipNum] = item;
         m_equipNum++;
         if( m_equipNum > EQUIP_ITEM_MAX ) m_equipNum = EQUIP_ITEM_MAX;
+
+        m_gravity += item.GetComponent<ItemBase>().Gravity;
+
         return true;
     }
 
@@ -312,6 +314,7 @@ public class CharAction : MonoBehaviour {
         GameObject item = m_arrayEquipItem[idx];
         if( item )
         {
+            m_gravity -= item.GetComponent<ItemBase>().Gravity;
             item.GetComponent<ItemBase>().RemoveObject();
         }
 
@@ -370,4 +373,25 @@ public class CharAction : MonoBehaviour {
             }
         }
     }
+
+    //---------------------------------------------------------------
+    /*
+        @brief      リセット処理
+    */
+    //---------------------------------------------------------------
+    void ResetPosition()
+    {
+        if( Input.GetButtonDown("Option") )
+        {
+            m_vectorToMove = Vector3.zero;
+            rb.AddForce(m_vectorToMove, ForceMode.VelocityChange);
+
+            Vector3 pos = new Vector3(4100, 2, -3700);
+            Quaternion rot = Quaternion.Euler(0, 270, 0);
+
+            transform.position = pos;
+            transform.rotation = rot;
+        }
+    }
+
 }
