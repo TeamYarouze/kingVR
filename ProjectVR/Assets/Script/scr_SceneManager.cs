@@ -70,26 +70,31 @@ public class scr_SceneManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		mainCamera = GameObject.Find("SocialScreenCamera").GetComponent<Camera>();
-        if( !mainCamera )
+        if( GameObject.Find("SocialScreenCamera") )
         {
-            Debug.Log("MainCamera Object Not Find\n");
+		    mainCamera = GameObject.Find("SocialScreenCamera").GetComponent<Camera>();
+            if( !mainCamera )
+            {
+                Debug.Log("MainCamera Object Not Find\n");
+            }
         }
 
-        freeLookCamera = GameObject.Find("FreeCamera").GetComponent<Camera>(); 
-        if( !freeLookCamera )
+        if( GameObject.Find("FreeCamera") )
         {
-            Debug.Log("FreeLookCamera Object Not Find\n");
-        }
-        else
-        {
-            freeLookCamera.enabled = false;
+            freeLookCamera = GameObject.Find("FreeCamera").GetComponent<Camera>(); 
+            if( !freeLookCamera )
+            {
+                Debug.Log("FreeLookCamera Object Not Find\n");
+            }
         }
 
-        fpsCamera = GameObject.Find("FPSCamera").GetComponent<Camera>();
-        if( !fpsCamera )
+        if( GameObject.Find("FPSCamera") )
         {
-            Debug.Log("FPS Camera Object Not Find\n");
+            fpsCamera = GameObject.Find("FPSCamera").GetComponent<Camera>();
+            if( !fpsCamera )
+            {
+                Debug.Log("FPS Camera Object Not Find\n");
+            }
         }
                 
         bSetupHMDDevice = false;
@@ -196,29 +201,54 @@ public class scr_SceneManager : MonoBehaviour {
 
     public void EnableMainCamera()
     {
-        if( !mainCamera || !freeLookCamera || !fpsCamera ) return;
-        mainCamera.enabled = true;
-        freeLookCamera.enabled = false;
-        fpsCamera.enabled = false;
-        cameraType = UseCameraType.USE_CAMERA_MAIN;
+        if( mainCamera )
+        {
+            mainCamera.enabled = true;
+            cameraType = UseCameraType.USE_CAMERA_MAIN;
+        }
+        if( freeLookCamera )
+        {
+            freeLookCamera.enabled = false;
+        }
+        if( fpsCamera )
+        {
+            fpsCamera.enabled = false;
+        }
     }
 
     public void EnableFreeLookCamera()
     {
-        if( !mainCamera || !freeLookCamera || !fpsCamera ) return;
-        mainCamera.enabled = false;
-        freeLookCamera.enabled = true;
-        fpsCamera.enabled = false;
-        cameraType = UseCameraType.USE_CAMERA_FREELOOK;
+        if( mainCamera )
+        {
+            mainCamera.enabled = false;
+        }
+
+        if( freeLookCamera )
+        {
+            freeLookCamera.enabled = true;
+            cameraType = UseCameraType.USE_CAMERA_FREELOOK;
+        }
+        if( fpsCamera )
+        {
+            fpsCamera.enabled = false;
+        }
     }
 
     public void EnableFPSCamera()
     {
-        if( !mainCamera || !freeLookCamera || !fpsCamera ) return;
-        mainCamera.enabled = false;
-        freeLookCamera.enabled = false;
-        fpsCamera.enabled = true;
-        cameraType = UseCameraType.USE_CAMERA_FPS;
+        if( mainCamera )
+        {
+            mainCamera.enabled = false;
+        }
+        if( freeLookCamera )
+        {
+            freeLookCamera.enabled = false;
+        }
+        if( fpsCamera )
+        {
+            fpsCamera.enabled = true;
+            cameraType = UseCameraType.USE_CAMERA_FPS;
+        }
     }
 
     public void ProcSetupVRMode()

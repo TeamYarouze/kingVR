@@ -68,8 +68,14 @@ public class CharAction : MonoBehaviour {
         rb.freezeRotation = true;
         rb.useGravity = false;
 
-        m_camera = GameObject.Find("FreeCamera").GetComponent<Camera>();
-        m_fpsCamera = GameObject.Find("FPSCamera").GetComponent<Camera>();
+        if( GameObject.Find("FreeCamera") )
+        {
+            m_camera = GameObject.Find("FreeCamera").GetComponent<Camera>();
+        }
+        if( GameObject.Find("FPSCamera") )
+        {
+            m_fpsCamera = GameObject.Find("FPSCamera").GetComponent<Camera>();
+        }
         m_VRCameraRoot = GameObject.Find("VRCameraRoot");
         yaw = 0.0f;
 

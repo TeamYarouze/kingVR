@@ -51,5 +51,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91bc0de13ce6dc44887428023b14a089, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RocketAngle: 45
-  RocketPower: 5
+  RocketAngle: 60
+  RocketPower: 100
+  RocketGravity: 20
