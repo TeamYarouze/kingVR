@@ -100,7 +100,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4381815063933518, guid: 5d9d7f288a3995341818edd3726e56a4, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -2400
+      value: -3100
       objectReference: {fileID: 0}
     - target: {fileID: 4381815063933518, guid: 5d9d7f288a3995341818edd3726e56a4, type: 2}
       propertyPath: m_LocalPosition.y
@@ -335,7 +335,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4301274150265050, guid: d8097ea0caaf0ce408dc755b55966986, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -2398.86
+      value: -3100
       objectReference: {fileID: 0}
     - target: {fileID: 4301274150265050, guid: d8097ea0caaf0ce408dc755b55966986, type: 2}
       propertyPath: m_LocalPosition.y
@@ -364,15 +364,6 @@ Prefab:
     - target: {fileID: 4301274150265050, guid: d8097ea0caaf0ce408dc755b55966986, type: 2}
       propertyPath: m_RootOrder
       value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4301274150265050, guid: d8097ea0caaf0ce408dc755b55966986, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 20772842386679654, guid: d8097ea0caaf0ce408dc755b55966986,
-        type: 2}
-      propertyPath: far clip plane
-      value: 5000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d8097ea0caaf0ce408dc755b55966986, type: 2}
