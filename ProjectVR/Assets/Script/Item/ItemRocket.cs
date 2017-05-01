@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class ItemRocket : ItemBase {
 
-    public float RocketAngle = 60.0f;
-    public float RocketPower = 100.0f;
-    public float RocketGravity = 20.0f;
+    private float RocketAngle = 60.0f;
+    private float RocketPower = 300.0f;
+    private float RocketGravity = 50.0f;
  
 	// Use this for initialization
 	new public void Start () {

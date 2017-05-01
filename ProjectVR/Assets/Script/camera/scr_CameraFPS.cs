@@ -33,7 +33,7 @@ public class scr_CameraFPS : MonoBehaviour {
         offsetHeight = 2.0f;
         offsetForward = 2.0f;
 
-        angle_yaw = 90.0f;
+        angle_yaw = 270.0f;
         angle_pitch = 0.0f;
 	}
 	

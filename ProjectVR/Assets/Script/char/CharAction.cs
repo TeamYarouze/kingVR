@@ -38,8 +38,12 @@ public class CharAction : MonoBehaviour {
     private float m_power;                          // 前に進む力
     private float m_angle;                          // 吹っ飛ぶ角度
     private Vector3 m_vectorToMove;                 // 移動ベクトル
+    private Vector3 m_vectorToMoveInverse;          // 逆移動ベクトル
 
-    public float BASE_GRAVITY = 10.0f;
+    private Vector3 m_StartPos;
+    private Quaternion m_StartRot;
+
+    private float BASE_GRAVITY = 50.0f;
 
     public float BlowoffPower
     {
@@ -82,6 +86,9 @@ public class CharAction : MonoBehaviour {
         m_gravity = BASE_GRAVITY;
 
         m_vectorToMove = Vector3.zero;
+
+        m_StartPos = transform.position;
+        m_StartRot = transform.rotation;
 
         bBlowOff = false;
         // 試しにRocketをセット
@@ -205,9 +212,11 @@ public class CharAction : MonoBehaviour {
         */
 
         {
-            string infoStr = "King Param\n";
+            string infoStr = "----------------- King Param\n";
+            infoStr += "Pos:" + transform.position.ToString() + "\n";
             infoStr += "Gravity:" + m_gravity + "\n";
             infoStr += "BlowoffVector: " + m_vectorToMove.ToString() + "\n";
+            infoStr += "Velocity:" + rb.velocity.ToString() + "\n";
             infoStr += "Action Mode: " + m_actMode + "BlowOff:" + bBlowOff + "\n";
             scr_GUIText.instance.AddText(infoStr);
         }
@@ -237,7 +246,7 @@ public class CharAction : MonoBehaviour {
         // 重力の適用
         ApplyGravity();
     }
-
+    
     //---------------------------------------------------------------
     /*
         @brief      ぶっ飛ぶ設定
@@ -252,11 +261,17 @@ public class CharAction : MonoBehaviour {
         m_vectorToMove = rot * vForward;
         m_vectorToMove *= power;
 
+        m_vectorToMoveInverse = -m_vectorToMove * 0.25f;
+
         m_power = power;
 
         bBlowOff = true;
 
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+
         rb.AddForce(m_vectorToMove, mode);
+
     }
 
     //---------------------------------------------------------------
@@ -267,6 +282,7 @@ public class CharAction : MonoBehaviour {
     private void ApplyGravity()
     {
         rb.AddForce(0.0f, -m_gravity, 0.0f, ForceMode.Acceleration);
+//        rb.AddForce(m_vectorToMoveInverse, ForceMode.Acceleration);
     }
 
     //---------------------------------------------------------------
@@ -392,11 +408,11 @@ public class CharAction : MonoBehaviour {
             m_vectorToMove = Vector3.zero;
             rb.AddForce(m_vectorToMove, ForceMode.VelocityChange);
 
-            Vector3 pos = new Vector3(4100, 2, -3700);
-            Quaternion rot = Quaternion.Euler(0, 270, 0);
+            rb.velocity = m_vectorToMove;
+            rb.angularVelocity = m_vectorToMove;
 
-            transform.position = pos;
-            transform.rotation = rot;
+            transform.position = m_StartPos;
+            transform.rotation = m_StartRot;
         }
     }
 
