@@ -21,8 +21,8 @@ public class CharAction : MonoBehaviour {
     private Animator anim = null;							// キャラにアタッチされるアニメーターへの参照
 //	private AnimatorStateInfo currentBaseState;			// base layerで使われる、アニメーターの現在の状態の参照
 
-    private Camera m_camera;
-    private Camera m_fpsCamera;
+    private UpdateStage000 updater = null;
+    private Camera m_camera = null;
     private GameObject m_VRCameraRoot;
 
     private ACTION_MODE m_actMode;
@@ -67,19 +67,15 @@ public class CharAction : MonoBehaviour {
     */
     //---------------------------------------------------------------
 	void Start () {
+        updater = UpdateStage000.Instance;
+
         // RigidBodyの取得
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         rb.useGravity = false;
 
-        if( GameObject.Find("FreeCamera") )
-        {
-            m_camera = GameObject.Find("FreeCamera").GetComponent<Camera>();
-        }
-        if( GameObject.Find("FPSCamera") )
-        {
-            m_fpsCamera = GameObject.Find("FPSCamera").GetComponent<Camera>();
-        }
+        m_camera = updater.CameraMngr.GetCurrentCameraComponent();
+
         m_VRCameraRoot = GameObject.Find("VRCameraRoot");
         yaw = 0.0f;
 
@@ -139,13 +135,11 @@ public class CharAction : MonoBehaviour {
             break;
         // 自由歩行
         case ACTION_MODE.ACT_MODE_FREEWALK:
-            // FPS風移動
-            if( scr_SceneManager.instance.CameraType == scr_SceneManager.UseCameraType.USE_CAMERA_FPS )
+            if( updater.CameraMngr.CameraType == CameraManager.UseCameraType.USE_CAMERA_FPS )
             {
                 ExecMoveFPS(lh, lv);
             }
-            // TPS風移動
-            else if( scr_SceneManager.instance.CameraType == scr_SceneManager.UseCameraType.USE_CAMERA_FREELOOK )
+            else if( updater.CameraMngr.CameraType == CameraManager.UseCameraType.USE_CAMERA_FREELOOK )
             {
                 ExecMoveTPS(lh, lv);
             }
@@ -173,8 +167,8 @@ public class CharAction : MonoBehaviour {
     // キャラの移動処理 FPS
     void ExecMoveFPS(float h, float v)
     {
-        Vector3 cameraForward = Vector3.Scale(m_fpsCamera.transform.forward, new Vector3(1.0f, 0.0f, 1.0f));
-        Vector3 direction = cameraForward * v + m_fpsCamera.transform.right * h;
+        Vector3 cameraForward = Vector3.Scale(m_camera.transform.forward, new Vector3(1.0f, 0.0f, 1.0f));
+        Vector3 direction = cameraForward * v + m_camera.transform.right * h;
 
         transform.position += direction;   
     }
@@ -184,6 +178,8 @@ public class CharAction : MonoBehaviour {
     {
         if( VRSettings.enabled )
         {
+
+
             /*
             Quaternion targetRot = m_VRCameraRoot.GetComponent<scr_VRCameraRoot>().CameraRotation;
             Quaternion currentRot = transform.rotation;
@@ -196,7 +192,7 @@ public class CharAction : MonoBehaviour {
         }
         else
         {
-            float yaw = m_fpsCamera.GetComponent<scr_CameraFPS>().Angle_Yaw;
+            float yaw = m_camera.GetComponent<scr_CameraFPS>().Angle_Yaw;
             transform.rotation = Quaternion.AngleAxis(yaw, Vector3.up);
         }
     }
@@ -373,6 +369,7 @@ public class CharAction : MonoBehaviour {
     //---------------------------------------------------------------
     void ChangeMoveMode()
     {
+        /*
         if( Input.GetKeyDown(KeyCode.M) )
         {
             m_actMode++;
@@ -380,7 +377,6 @@ public class CharAction : MonoBehaviour {
             {
                 m_actMode = ACTION_MODE.ACT_MODE_BLOWOFF;
             }
-
             if( m_actMode == ACTION_MODE.ACT_MODE_BLOWOFF )
             {
                 scr_SceneManager.instance.SetCameraMode(scr_SceneManager.UseCameraType.USE_CAMERA_FPS);
@@ -393,7 +389,9 @@ public class CharAction : MonoBehaviour {
             {
                 scr_SceneManager.instance.SetCameraMode(scr_SceneManager.UseCameraType.USE_CAMERA_FREELOOK);
             }
+            
         }
+        */
     }
 
     //---------------------------------------------------------------

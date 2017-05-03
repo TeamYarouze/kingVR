@@ -6,39 +6,17 @@ using UnityEngine.PS4.VR;
 using UnityEngine.PS4;
 #endif
 
-public class VRManager : MonoBehaviour
+public class VRManager : Singleton<VRManager>
 {
     private float renderScale = 1.4f; // 1.4 is Sony's recommended scale for PlayStation VR
 
     private bool showHmdViewOnMonitor = true; // Set this to 'false' to use the monitor/display as the Social Screen
 
-    private static VRManager _instance;
-    public static VRManager instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<VRManager>();
-                DontDestroyOnLoad(_instance.gameObject);
-            }
-
-            return _instance;
-        }
-    }
-
     void Awake()
     {
-        if (_instance == null)
-        {
-            _instance = this;
-            DontDestroyOnLoad(this);
-        }
-        else if (this != _instance)
-        {
-            // There can be only one!
-            Destroy(gameObject);
-        }
+        Debug.Log("------------- VRManager Instance");
+        base.Awake();
+        DontDestroyOnLoad(this.gameObject);
     }
 
     public void BeginVRSetup()

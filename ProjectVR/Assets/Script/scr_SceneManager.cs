@@ -6,22 +6,7 @@ using UnityEngine.VR;
 using UnityEngine.PS4;
 #endif  //
 
-public class scr_SceneManager : MonoBehaviour {
-
-    // シングルトン
-    private static scr_SceneManager _instance;
-    public static scr_SceneManager instance
-    {
-        get
-        {
-            if( _instance == null )
-            {
-                _instance = FindObjectOfType<scr_SceneManager>();
-                DontDestroyOnLoad(_instance.gameObject);
-            }
-            return _instance;
-        }
-    }
+public class scr_SceneManager : Singleton<scr_SceneManager> {
 
     private Camera mainCamera = null;
     private Camera freeLookCamera = null;
@@ -57,15 +42,8 @@ public class scr_SceneManager : MonoBehaviour {
 
     public void Awake()
     {
-        if( _instance == null )
-        {
-            _instance = this;
-            DontDestroyOnLoad(_instance);
-        }
-        else if( this != _instance )
-        {
-            Destroy(gameObject);
-        }
+        base.Awake();
+        DontDestroyOnLoad(this.gameObject);
     }
 
 	// Use this for initialization
@@ -104,7 +82,7 @@ public class scr_SceneManager : MonoBehaviour {
 
         if( VRSettings.enabled )
         {
-            VRManager.instance.BeginVRSetup();
+            VRManager.Instance.BeginVRSetup();
         }
 
         /*
@@ -130,7 +108,7 @@ public class scr_SceneManager : MonoBehaviour {
 
         if( VRSettings.enabled && Input.GetButtonDown("Triangle") )
         {
-            VRManager.instance.ToggleHMDViewOnMonitor();
+            VRManager.Instance.ToggleHMDViewOnMonitor();
         }
 
 		if( Input.GetKeyDown(KeyCode.C) )
@@ -254,6 +232,6 @@ public class scr_SceneManager : MonoBehaviour {
     public void ProcSetupVRMode()
     {
         Debug.Log("------------- Scene Manager Begin SetupHMD Device");
-        VRManager.instance.SetupHMDDevice();
+        VRManager.Instance.SetupHMDDevice();
     }
 }
