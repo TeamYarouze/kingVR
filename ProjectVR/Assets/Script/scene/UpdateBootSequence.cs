@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VR;
 
 public class UpdateBootSequence : MonoBehaviour {
 
@@ -12,17 +13,13 @@ public class UpdateBootSequence : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
-        if( counter < 15 )
-        {
-            counter++;
-            // 適当に15フレーム後
-            if( counter == 15 )
-            {
-                // シーン遷移テスト!!!!!
-                GameSceneManager.Instance.ChangeScene(GameModeData.GAMEMODE.GAME_MODE_STAGE);           
 
-            }
+        if( GameFadeManager.Instance.IsFade() ) return;
+		
+        if( Input.GetButtonDown("Option") )
+        {
+            // シーン遷移テスト!!!!!
+            GameSceneManager.Instance.ChangeScene(GameModeData.GAMEMODE.GAME_MODE_STAGE);           
         }
 	}
 }

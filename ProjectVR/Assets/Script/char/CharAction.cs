@@ -401,7 +401,7 @@ public class CharAction : MonoBehaviour {
     //---------------------------------------------------------------
     void ResetPosition()
     {
-        if( Input.GetButtonDown("Option") )
+        if( Input.GetButtonDown("L3") )
         {
             m_vectorToMove = Vector3.zero;
             rb.AddForce(m_vectorToMove, ForceMode.VelocityChange);

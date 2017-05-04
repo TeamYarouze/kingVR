@@ -38,4 +38,10 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         Destroy(this);
         return false;
     }
+
+    public void OnDestroy()
+    {
+        Debug.Log("---- Destory GameObject :" + typeof(T));
+        Destroy(gameObject);
+    }
 }

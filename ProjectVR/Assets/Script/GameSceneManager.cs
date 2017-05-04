@@ -9,6 +9,7 @@ using UnityEngine.PS4;
 
 public class GameSceneManager : Singleton<GameSceneManager> {
 
+    public const int DEFAULT_FPS = 60;
 
     public void Awake()
     {
@@ -16,18 +17,23 @@ public class GameSceneManager : Singleton<GameSceneManager> {
 
         base.Awake();
         DontDestroyOnLoad(this.gameObject);
+
+        // FPS固定
+        Application.targetFrameRate = DEFAULT_FPS;
     }
 
 	void Start () {
         Debug.Log("------------- GameSceneManager Start \n");
-        
+        if( VRSettings.enabled )
+        {
+            VRManager.Instance.BeginVRSetup();
+        }
 	}
 	
 	void Update ()
     {
-
-
 	}
+
 
     //---------------------------------------------------------------
     /*
@@ -60,7 +66,7 @@ public class GameSceneManager : Singleton<GameSceneManager> {
         }
         
         // フェードイン
-        GameFadeManager.Instance.StartFade(GameFadeManager.FadeType.FADE_IN, 60);
+        GameFadeManager.Instance.StartFade(GameFadeManager.FadeType.FADE_IN, 30);
         while( GameFadeManager.Instance.IsFade() )
         {
             yield return null;

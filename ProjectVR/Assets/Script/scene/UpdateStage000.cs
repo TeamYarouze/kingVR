@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VR;
 
 public class UpdateStage000 : Singleton<UpdateStage000> {
 
@@ -23,12 +24,25 @@ public class UpdateStage000 : Singleton<UpdateStage000> {
 
 	// Use this for initialization
 	void Start () {
-	    
+
+
+
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
+        if( Input.GetButtonDown("R1") )
+        {
+            VRManager.Instance.ChangeVRMode();       
+        }
+
         cameraMngr.ChangeCameraMode();
+
+        if( Input.GetButtonDown("Option") )
+        {
+            GameSceneManager.Instance.ChangeScene(GameModeData.GAMEMODE.GAME_MODE_BOOT);
+        }
 	}
 }

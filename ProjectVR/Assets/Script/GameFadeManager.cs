@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.VR;
 
 
 public class GameFadeManager : Singleton<GameFadeManager> {
 
+    private Canvas fadeCanvas;
     private Image fadeImage;
+    private Camera camera;          // VRモード時用
 
     private int counter;
     private int FadeTime;
@@ -31,11 +34,11 @@ public class GameFadeManager : Singleton<GameFadeManager> {
         base.Awake();
         DontDestroyOnLoad(this.gameObject);
 
-        Canvas canvas = gameObject.GetComponentInChildren<Canvas>();
+        fadeCanvas = gameObject.GetComponentInChildren<Canvas>();
 
-        if( canvas != null )
+        if( fadeCanvas != null )
         {
-            fadeImage = canvas.GetComponentInChildren<Image>();
+            fadeImage = fadeCanvas.GetComponentInChildren<Image>();
         }
     }
 
@@ -45,18 +48,30 @@ public class GameFadeManager : Singleton<GameFadeManager> {
         counter = 0;
         FadeTime = 0;
         fadeType = FadeType.FADE_NONE;
+
+        Color col = fadeImage.color;
+        col.a = 0.0f;
+        fadeImage.color = col;
+
+        camera = null;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+        if( VRSettings.enabled )
+        {
+            fadeCanvas.worldCamera = Camera.main;
+        }
 		
+        bool bFinish = false;
         switch( fadeType )
         {
         case FadeType.FADE_IN:
-            FadeIn();
+            bFinish = FadeIn();
             break;
         case FadeType.FADE_OUT:
-            FadeOut();
+            bFinish = FadeOut();
             break;
         }
 
@@ -66,9 +81,13 @@ public class GameFadeManager : Singleton<GameFadeManager> {
             counter++;
             if( counter > FadeTime )
             {
-                Debug.Log("Fade" + fadeType + "Is Finish");
-                fadeType = FadeType.FADE_NONE;
-                counter = 0;
+                counter = FadeTime;
+                if( bFinish )
+                {
+                    Debug.Log("Fade" + fadeType + "Is Finish");
+                    fadeType = FadeType.FADE_NONE;
+                    counter = 0;
+                }
             }
         }
 	}
@@ -91,7 +110,7 @@ public class GameFadeManager : Singleton<GameFadeManager> {
         }        
     }
 
-    private void FadeIn()
+    private bool FadeIn()
     {
         Color fadeColor = fadeImage.color;
 
@@ -101,9 +120,18 @@ public class GameFadeManager : Singleton<GameFadeManager> {
         fadeColor.a = alpha;
 
         fadeImage.color = fadeColor;
+
+        if( alpha <= 0.0f )
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
-    private void FadeOut()
+    private bool FadeOut()
     {
         Color fadeColor = fadeImage.color;
 
@@ -113,5 +141,31 @@ public class GameFadeManager : Singleton<GameFadeManager> {
         fadeColor.a = alpha;
 
         fadeImage.color = fadeColor;
+
+        if( alpha >= 1.0f )
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /**
+     * VRモード時の設定
+     */
+    public void SetupVRMode(Camera vrCamera)
+    {
+        fadeCanvas.renderMode = RenderMode.ScreenSpaceCamera;
+        fadeCanvas.worldCamera = vrCamera;
+    }
+    /**
+     * VRモードの解除
+     */
+    public void ResetVRMode()
+    {
+        fadeCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        fadeCanvas.worldCamera = null;
     }
 }

@@ -63,6 +63,8 @@ public class VRManager : Singleton<VRManager>
         VRSettings.enabled = true;
         VRSettings.renderScale = renderScale;
         VRSettings.showDeviceView = showHmdViewOnMonitor;
+
+        GameFadeManager.Instance.SetupVRMode(Camera.main);
     }
 
     public void BeginShutdownVR()
@@ -92,6 +94,8 @@ public class VRManager : Singleton<VRManager>
 #endif
         Camera.main.ResetFieldOfView();
         Camera.main.ResetAspect();
+
+        GameFadeManager.Instance.ResetVRMode();
     }
 
     public void SetupHMDDevice()
@@ -194,4 +198,13 @@ public class VRManager : Singleton<VRManager>
         return handledEvent;
     }
 #endif
+
+    /**
+     *      VRモードと通常モードを切り替える
+     */
+    public void ChangeVRMode()
+    {
+        Debug.Log("------------- Begin SetupHMD Device");
+        SetupHMDDevice();
+    }
 }

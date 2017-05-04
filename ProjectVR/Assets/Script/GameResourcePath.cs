@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class GameResourcePath {
 
-    private static string BootSequence = "Scene/bootSequecne";
+    private static string BootSequence = "Scene/bootSequence";
     private static string Stage000 = "Scene/Stage000/Stage000";
 
     public static string GetSceneName(GameModeData.GAMEMODE mode)
