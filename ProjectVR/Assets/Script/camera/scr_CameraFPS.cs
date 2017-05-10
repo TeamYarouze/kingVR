@@ -11,7 +11,7 @@ public class scr_CameraFPS : MonoBehaviour {
     private Camera  m_camera;
     private Quaternion totalRotation;
 
-    public const int ROTATE_UNIT_ANGLE = 5;
+    public const int ROTATE_UNIT_ANGLE = 2;
     public float offsetHeight;
     public float offsetForward;
 
@@ -81,7 +81,7 @@ public class scr_CameraFPS : MonoBehaviour {
     //---------------------------------------------------------------
     public void RotateCamera(float v, float h)
     {
-        angle_yaw += h * ROTATE_UNIT_ANGLE * Time.deltaTime;
+        angle_yaw += h * ROTATE_UNIT_ANGLE;
         if( angle_yaw > 360.0f )
         {
             angle_yaw -= 360.0f;
@@ -90,7 +90,7 @@ public class scr_CameraFPS : MonoBehaviour {
         {
             angle_yaw += 360.0f;
         }
-        angle_pitch += v * ROTATE_UNIT_ANGLE * Time.deltaTime;
+        angle_pitch += v * ROTATE_UNIT_ANGLE;
         if( angle_pitch > 360.0f )
         {
             angle_pitch -= 360.0f;

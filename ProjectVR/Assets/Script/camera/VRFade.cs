@@ -4,46 +4,32 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.VR;
 
-
-public class GameFadeManager : Singleton<GameFadeManager> {
+public class VRFade : MonoBehaviour {
 
     private Canvas fadeCanvas;
     private Image fadeImage;
-
-    private VRFade vrFade = null;
 
     private int counter;
     private int FadeTime;
     private float fadeBlend;
 
-    public enum FadeType
+    public enum VRFadeType
     {
-        FADE_NONE = 0,
-        FADE_IN,
-        FADE_OUT,
-        FADE_MAX,
+        VRFADE_NONE = 0,
+        VRFADE_IN,
+        VRFADE_OUT,
+        VRFADE_MAX,
     };
-    private FadeType fadeType;
+    private VRFadeType fadeType;
 
     public bool IsFade()
     {
-        if (vrFade != null)
-        {
-            return vrFade.IsFade();
-        }
-        else
-        {
-            return fadeType != FadeType.FADE_NONE;
-        }
+        return fadeType != VRFadeType.VRFADE_NONE;
     }
 
     void Awake()
     {
-        base.Awake();
-        DontDestroyOnLoad(this.gameObject);
-
         fadeCanvas = gameObject.GetComponentInChildren<Canvas>();
-
         if( fadeCanvas != null )
         {
             fadeImage = fadeCanvas.GetComponentInChildren<Image>();
@@ -52,10 +38,9 @@ public class GameFadeManager : Singleton<GameFadeManager> {
 
 	// Use this for initialization
 	void Start () {
-		
         counter = 0;
         FadeTime = 0;
-        fadeType = FadeType.FADE_NONE;
+        fadeType = VRFadeType.VRFADE_NONE;
 
         Color col = fadeImage.color;
         col.a = 0.0f;
@@ -64,19 +49,14 @@ public class GameFadeManager : Singleton<GameFadeManager> {
 	
 	// Update is called once per frame
 	void Update () {
-
-        if( vrFade != null )
-        {
-            return ;
-        }
-
+		
         bool bFinish = false;
         switch( fadeType )
         {
-        case FadeType.FADE_IN:
+        case VRFadeType.VRFADE_IN:
             bFinish = FadeIn();
             break;
-        case FadeType.FADE_OUT:
+        case VRFadeType.VRFADE_OUT:
             bFinish = FadeOut();
             break;
         }
@@ -91,26 +71,14 @@ public class GameFadeManager : Singleton<GameFadeManager> {
                 if( bFinish )
                 {
                     Debug.Log("Fade" + fadeType + "Is Finish");
-                    fadeType = FadeType.FADE_NONE;
+                    fadeType = VRFadeType.VRFADE_NONE;
                     counter = 0;
                 }
             }
-        }
+        }	
 	}
 
-    public void StartFade(FadeType type, int fadeTime)
-    {
-        if( vrFade != null )
-        {
-            vrFade.StartFade((VRFade.VRFadeType)(type), fadeTime);
-        }
-        else
-        {
-            _StartFade(type, fadeTime);
-        }
-    }
-
-    private void _StartFade(FadeType type, int fadeTime)
+    public void StartFade(VRFadeType type, int fadeTime)
     {
         fadeType = type;
         FadeTime = fadeTime;
@@ -118,11 +86,11 @@ public class GameFadeManager : Singleton<GameFadeManager> {
 
         // 現在のα値に合わせて開始時間を設定
         Color col = fadeImage.color;
-        if( type == FadeType.FADE_IN )
+        if( type == VRFadeType.VRFADE_IN )
         {
             counter = (int)((col.a - 1.0f) * FadeTime);
         }
-        else if( type == FadeType.FADE_OUT )
+        else if( type == VRFadeType.VRFADE_OUT )
         {
             counter = (int)(col.a * FadeTime);
         }        
@@ -167,55 +135,6 @@ public class GameFadeManager : Singleton<GameFadeManager> {
         else
         {
             return false;
-        }
-    }
-
-    /**
-     *  親子関係の設定
-     *  @param[in] parent 親OBJ (nullで親子関係を解消)
-     */
-    public void SetParent(GameObject parent)
-    {
-        if( parent != null )
-        {
-            transform.parent = parent.transform;
-        }
-        else
-        {
-            transform.parent = null;
-        }
-    }
-
-    /**
-     * VRモード時の設定
-     */
-    public void SetupVRMode(string cameraName)
-    {
-        if( !VRSettings.enabled )
-        {
-            ResetVRMode();
-            return;
-        }
-
-        if( vrFade != null )
-        {
-            vrFade = null;
-        }
-
-        GameObject cam = GameObject.Find(cameraName);
-        if( cam )
-        {
-            vrFade = cam.GetComponent<VRFade>();
-        }
-    }
-    /**
-     * VRモードの解除
-     */
-    public void ResetVRMode()
-    {
-        if( vrFade != null )
-        {
-            vrFade = null;
         }
     }
 }

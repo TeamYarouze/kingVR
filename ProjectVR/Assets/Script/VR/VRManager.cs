@@ -64,7 +64,7 @@ public class VRManager : Singleton<VRManager>
         VRSettings.renderScale = renderScale;
         VRSettings.showDeviceView = showHmdViewOnMonitor;
 
-        GameFadeManager.Instance.SetupVRMode(Camera.main);
+        GameFadeManager.Instance.SetupVRMode(Camera.main.name);
     }
 
     public void BeginShutdownVR()

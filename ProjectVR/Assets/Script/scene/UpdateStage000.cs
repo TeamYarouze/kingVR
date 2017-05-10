@@ -20,12 +20,11 @@ public class UpdateStage000 : Singleton<UpdateStage000> {
     {
         cameraMngr = new CameraManager();
         cameraMngr.Initialize();
+        GameFadeManager.Instance.SetupVRMode(Camera.main.name);
     }
 
 	// Use this for initialization
 	void Start () {
-
-
 
 
 	}

@@ -50,6 +50,7 @@ public class GameSceneManager : Singleton<GameSceneManager> {
 
     IEnumerator LoadSceneAsync(GameModeData.GAMEMODE next)
     {
+
         // フェードアウトしてから
         GameFadeManager.Instance.StartFade(GameFadeManager.FadeType.FADE_OUT, 30);
         while( GameFadeManager.Instance.IsFade() )
