@@ -6,6 +6,12 @@ public class scr_GUIText : MonoBehaviour {
 
     private GameObject textObj = null;
     private bool bDraw = false;
+    private bool bGUIDraw = false;
+
+    // fps計測
+    private float fps;
+    private int updateCount;
+    private float timeElapsed;
 
     // シングルトン
     private static scr_GUIText _instance;
@@ -35,24 +41,35 @@ public class scr_GUIText : MonoBehaviour {
         }
     }
 
+    void OnEnable()
+    {
+        fps = 0.0f;
+        updateCount = 0;
+        timeElapsed = 0.0f;
+    }
+
 	// Use this for initialization
 	void Start () {
 		textObj = GameObject.Find("Text");
         bDraw = false;
+        bGUIDraw = false;
  	}
 	
 	// Update is called once per frame
 	void Update () {
+        CalcFPS();
 
         if( !textObj ) return;
 
         if( Input.GetButtonDown("L1") )
         {
             bDraw = !bDraw;
+            bGUIDraw = !bGUIDraw;
         }
 
         textObj.GetComponent<GUIText>().text = "";
 	}
+
 
     void LateUpdate()
     {
@@ -77,5 +94,24 @@ public class scr_GUIText : MonoBehaviour {
     public void SetDrawFlag(bool flg)
     {
         bDraw = flg;
+    }
+
+    void OnGUI()
+    {
+        if( !bGUIDraw ) return;
+
+        GUI.Box(new Rect(1, 1, 150, 40), "FPS:"+fps+"\nTargetFPS: " + Application.targetFrameRate );
+    }
+
+    private void CalcFPS()
+    {
+        updateCount++;
+        timeElapsed += Time.deltaTime;
+        if( timeElapsed >= 1.0f )
+        {
+            fps = (float)(updateCount) / timeElapsed;
+            updateCount = 0;
+            timeElapsed = 0.0f;
+        }
     }
 }
