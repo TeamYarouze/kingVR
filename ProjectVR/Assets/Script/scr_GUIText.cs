@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_PS4
+using UnityEngine.PS4;
+#endif  //
 
 public class scr_GUIText : MonoBehaviour {
 
@@ -12,6 +15,10 @@ public class scr_GUIText : MonoBehaviour {
     private float fps;
     private int updateCount;
     private float timeElapsed;
+
+#if UNITY_PS4
+    private Utility.VideoOutResolutionStatus voInfo;
+#endif  //
 
     // シングルトン
     private static scr_GUIText _instance;
@@ -53,11 +60,20 @@ public class scr_GUIText : MonoBehaviour {
 		textObj = GameObject.Find("Text");
         bDraw = false;
         bGUIDraw = false;
+
+#if UNITY_PS4
+        {
+            int ret = Utility.GetVideoOutResolutionStatus(0, out voInfo);
+            if( ret == 0 )
+            {
+            }
+        }
+#endif  // UNITY_PS4
  	}
 	
 	// Update is called once per frame
 	void Update () {
-        CalcFPS();
+//        CalcFPS();
 
         if( !textObj ) return;
 
@@ -73,6 +89,7 @@ public class scr_GUIText : MonoBehaviour {
 
     void LateUpdate()
     {
+        CalcFPS();
     }
     
     public void SetText(string str)
@@ -100,7 +117,8 @@ public class scr_GUIText : MonoBehaviour {
     {
         if( !bGUIDraw ) return;
 
-        GUI.Box(new Rect(1, 1, 150, 40), "FPS:"+fps+"\nTargetFPS: " + Application.targetFrameRate );
+        GUI.Label(new Rect(1, 1, 300, 100), "FPS:"+fps+"\nTargetFPS: " + Application.targetFrameRate );
+        GUI.Label(new Rect(1, 110, 300, 100), "RefleshRate :" + voInfo.refreshRate + "\n" + "DeltaTime"+Time.deltaTime+"\n");
     }
 
     private void CalcFPS()

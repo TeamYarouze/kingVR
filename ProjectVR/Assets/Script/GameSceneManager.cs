@@ -9,8 +9,6 @@ using UnityEngine.PS4;
 
 public class GameSceneManager : Singleton<GameSceneManager> {
 
-    public const int DEFAULT_FPS = 60;
-
     public void Awake()
     {
         Debug.Log("--------------- GameSceneManager Instance - ");
@@ -19,7 +17,7 @@ public class GameSceneManager : Singleton<GameSceneManager> {
         DontDestroyOnLoad(this.gameObject);
 
         // FPS固定
-        Application.targetFrameRate = DEFAULT_FPS;
+        Application.targetFrameRate = GameDefine.BaseFPS;
     }
 
 	void Start () {

@@ -88,11 +88,13 @@ public class VRFade : MonoBehaviour {
         Color col = fadeImage.color;
         if( type == VRFadeType.VRFADE_IN )
         {
-            counter = (int)((col.a - 1.0f) * FadeTime);
+            col.a = 1.0f;
+            fadeImage.color = col;
         }
         else if( type == VRFadeType.VRFADE_OUT )
         {
-            counter = (int)(col.a * FadeTime);
+            col.a = 0.0f;
+            fadeImage.color = col;
         }        
     }
 

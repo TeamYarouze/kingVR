@@ -12,7 +12,7 @@ public class GameFadeManager : Singleton<GameFadeManager> {
 
     private VRFade vrFade = null;
 
-    private int counter;
+    private float counter;
     private int FadeTime;
     private float fadeBlend;
 
@@ -53,7 +53,7 @@ public class GameFadeManager : Singleton<GameFadeManager> {
 	// Use this for initialization
 	void Start () {
 		
-        counter = 0;
+        counter = 0.0f;
         FadeTime = 0;
         fadeType = FadeType.FADE_NONE;
 
@@ -84,15 +84,16 @@ public class GameFadeManager : Singleton<GameFadeManager> {
         // フェードカウンター
         if( IsFade() )
         {
-            counter++;
-            if( counter > FadeTime )
+            counter += GameDefine.FPSDeltaScale();
+
+            if( (int)counter > FadeTime )
             {
                 counter = FadeTime;
                 if( bFinish )
                 {
                     Debug.Log("Fade" + fadeType + "Is Finish");
                     fadeType = FadeType.FADE_NONE;
-                    counter = 0;
+                    counter = 0.0f;
                 }
             }
         }
@@ -120,11 +121,13 @@ public class GameFadeManager : Singleton<GameFadeManager> {
         Color col = fadeImage.color;
         if( type == FadeType.FADE_IN )
         {
-            counter = (int)((col.a - 1.0f) * FadeTime);
+            col.a = 1.0f;
+            fadeImage.color = col;
         }
         else if( type == FadeType.FADE_OUT )
         {
-            counter = (int)(col.a * FadeTime);
+            col.a = 0.0f;
+            fadeImage.color = col;
         }        
     }
 
@@ -132,7 +135,7 @@ public class GameFadeManager : Singleton<GameFadeManager> {
     {
         Color fadeColor = fadeImage.color;
 
-        fadeBlend = Mathf.Min((float)(counter) / (float)(FadeTime), 1.0f);
+        fadeBlend = Mathf.Min(counter / (float)(FadeTime), 1.0f);
         float alpha = Mathf.Lerp(1.0f, 0.0f, fadeBlend);
 
         fadeColor.a = alpha;
@@ -153,7 +156,7 @@ public class GameFadeManager : Singleton<GameFadeManager> {
     {
         Color fadeColor = fadeImage.color;
 
-        fadeBlend = Mathf.Min((float)(counter) / (float)(FadeTime), 1.0f);
+        fadeBlend = Mathf.Min(counter / (float)(FadeTime), 1.0f);
         float alpha = Mathf.Lerp(0.0f, 1.0f, fadeBlend);
 
         fadeColor.a = alpha;

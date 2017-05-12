@@ -16,7 +16,7 @@ public static class GameModeData {
 
         GAME_MODE_NUM,
     };
-    
+     
     private static GAMEMODE gameMode;
     public static GAMEMODE GameMode
     {
@@ -31,6 +31,8 @@ public static class GameModeData {
         get { return prevGameMode; }
     }
 
+    
+
     static GameModeData()
     {
         gameMode = GAMEMODE.GAME_MODE_BOOT;
@@ -42,5 +44,4 @@ public static class GameModeData {
         prevGameMode = gameMode;
         gameMode = mode;
     }
-
 }

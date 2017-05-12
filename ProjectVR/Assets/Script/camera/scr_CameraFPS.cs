@@ -81,7 +81,7 @@ public class scr_CameraFPS : MonoBehaviour {
     //---------------------------------------------------------------
     public void RotateCamera(float v, float h)
     {
-        angle_yaw += h * ROTATE_UNIT_ANGLE;
+        angle_yaw += h * ROTATE_UNIT_ANGLE * GameDefine.FPSDeltaScale();
         if( angle_yaw > 360.0f )
         {
             angle_yaw -= 360.0f;
@@ -90,7 +90,7 @@ public class scr_CameraFPS : MonoBehaviour {
         {
             angle_yaw += 360.0f;
         }
-        angle_pitch += v * ROTATE_UNIT_ANGLE;
+        angle_pitch += v * ROTATE_UNIT_ANGLE * GameDefine.FPSDeltaScale();
         if( angle_pitch > 360.0f )
         {
             angle_pitch -= 360.0f;
