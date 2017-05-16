@@ -73,6 +73,7 @@ public class CharAction : MonoBehaviour {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         rb.useGravity = false;
+        rb.isKinematic = false;
 
         m_camera = updater.CameraMngr.GetCurrentCameraComponent();
 
@@ -228,6 +229,16 @@ public class CharAction : MonoBehaviour {
         bBlowOff = false;
         m_vectorToMove = Vector3.zero;
         rb.AddForce(m_vectorToMove, ForceMode.VelocityChange);
+
+        // ゴール
+        if( collision.gameObject.name == "Goal" )
+        {
+            Debug.Log("Goooooaaaaallllll !!!!!!!!!!");
+            rb.useGravity = false;
+            rb.isKinematic = true;
+            rb.velocity = m_vectorToMove;
+            rb.angularVelocity = m_vectorToMove;
+        }
     }
 
     //---------------------------------------------------------------
@@ -411,6 +422,9 @@ public class CharAction : MonoBehaviour {
 
             transform.position = m_StartPos;
             transform.rotation = m_StartRot;
+
+            rb.useGravity = true;
+            rb.isKinematic = false;
         }
     }
 
