@@ -5,8 +5,9 @@ using UnityEngine;
 public class ItemRocket : ItemBase {
 
     private float RocketAngle = 60.0f;
-    private float RocketPower = 300.0f;
-    private float RocketGravity = 50.0f;
+//    private float RocketPower = 150.0f;
+    private float RocketPower = (150.0f * 1000.0f) / (60.0f*60.0f);
+    private float RocketGravity = 20.0f;
  
 	// Use this for initialization
 	new public void Start () {
@@ -22,6 +23,7 @@ public class ItemRocket : ItemBase {
         {
             return;
         }
+
 
         OnFire();
 	}

@@ -43,7 +43,7 @@ public class CharAction : MonoBehaviour {
     private Vector3 m_StartPos;
     private Quaternion m_StartRot;
 
-    private float BASE_GRAVITY = 50.0f;
+    private float BASE_GRAVITY = 100.0f;
 
     public float BlowoffPower
     {
@@ -74,6 +74,7 @@ public class CharAction : MonoBehaviour {
         rb.freezeRotation = true;
         rb.useGravity = false;
         rb.isKinematic = false;
+        
 
         m_camera = updater.CameraMngr.GetCurrentCameraComponent();
 
@@ -212,8 +213,8 @@ public class CharAction : MonoBehaviour {
             string infoStr = "----------------- King Param\n";
             infoStr += "Pos:" + transform.position.ToString() + "\n";
             infoStr += "Gravity:" + m_gravity + "\n";
-            infoStr += "BlowoffVector: " + m_vectorToMove.ToString() + "\n";
-            infoStr += "Velocity:" + rb.velocity.ToString() + "\n";
+            infoStr += "BlowoffVector: " + m_vectorToMove.ToString() + "Speed:" + m_vectorToMove.magnitude + "\n";
+            infoStr += "Velocity:" + rb.velocity.ToString() + "Speed:" + rb.velocity.magnitude + "\n";
             infoStr += "Action Mode: " + m_actMode + "BlowOff:" + bBlowOff + "\n";
             scr_GUIText.instance.AddText(infoStr);
         }
@@ -226,11 +227,13 @@ public class CharAction : MonoBehaviour {
     //---------------------------------------------------------------
     void OnCollisionEnter(Collision collision)
     {
+        /*
         bBlowOff = false;
         m_vectorToMove = Vector3.zero;
         rb.AddForce(m_vectorToMove, ForceMode.VelocityChange);
+        */
 
-        // ゴール
+        // ゴール処理
         if( collision.gameObject.name == "Goal" )
         {
             Debug.Log("Goooooaaaaallllll !!!!!!!!!!");
@@ -268,6 +271,9 @@ public class CharAction : MonoBehaviour {
         m_vectorToMove = rot * vForward;
         m_vectorToMove *= power;
 
+   
+        Debug.Log("Rocket Vector:" + m_vectorToMove.ToString() + "Speed:" + m_vectorToMove.magnitude);
+
         m_vectorToMoveInverse = -m_vectorToMove * 0.25f;
 
         m_power = power;
@@ -288,7 +294,7 @@ public class CharAction : MonoBehaviour {
     //---------------------------------------------------------------
     private void ApplyGravity()
     {
-        rb.AddForce(0.0f, -m_gravity, 0.0f, ForceMode.Acceleration);
+        rb.AddForce(0.0f, -m_gravity / 60.0f, 0.0f, ForceMode.Acceleration);
 //        rb.AddForce(m_vectorToMoveInverse, ForceMode.Acceleration);
     }
 
@@ -423,7 +429,7 @@ public class CharAction : MonoBehaviour {
             transform.position = m_StartPos;
             transform.rotation = m_StartRot;
 
-            rb.useGravity = true;
+            rb.useGravity = false;
             rb.isKinematic = false;
         }
     }
