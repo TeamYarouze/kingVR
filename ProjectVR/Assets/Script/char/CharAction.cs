@@ -296,7 +296,7 @@ public class CharAction : MonoBehaviour {
 
         bBlowOff = true;
 
-        rb.velocity = Vector3.Scale(rb.velocity, new Vector3(0.25f, 0.1f, 0.25f));
+        rb.velocity = Vector3.Scale(rb.velocity, new Vector3(1.0f, 0.0f, 1.0f));
         rb.angularVelocity = Vector3.zero;
 
         rb.AddForce(m_vectorToMove, mode);

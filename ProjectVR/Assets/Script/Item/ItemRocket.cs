@@ -53,7 +53,7 @@ public class ItemRocket : ItemBase {
         {
             m_Angle = RocketAngle;
             m_Power = RocketPower;
-            objScript.SetupBlowoffParam(m_Angle, m_Power, ForceMode.Impulse);
+            objScript.SetupBlowoffParam(m_Angle, m_Power, ForceMode.VelocityChange);
             m_state = EItemUseState.ITEM_STAT_USING;
             return true;
         }
