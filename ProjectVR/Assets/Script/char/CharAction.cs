@@ -43,7 +43,7 @@ public class CharAction : MonoBehaviour {
     private Vector3 m_StartPos;
     private Quaternion m_StartRot;
 
-    private float BASE_GRAVITY = 100.0f;
+    private float BASE_GRAVITY = 5.0f;
 
     public float BlowoffPower
     {
@@ -59,6 +59,10 @@ public class CharAction : MonoBehaviour {
     private float yaw;
     public float Yaw { get { return yaw; } }
 
+    //---------------------------------------------------------------
+    private float elapsedTime;
+    private Vector3 startPos;
+    private Vector3 distant;
 
 	// Use this for initialization
     //---------------------------------------------------------------
@@ -74,7 +78,6 @@ public class CharAction : MonoBehaviour {
         rb.freezeRotation = true;
         rb.useGravity = false;
         rb.isKinematic = false;
-        
 
         m_camera = updater.CameraMngr.GetCurrentCameraComponent();
 
@@ -91,6 +94,8 @@ public class CharAction : MonoBehaviour {
         bBlowOff = false;
         // 試しにRocketをセット
         EquipItem(GameObject.Find("Rocket"));
+
+        elapsedTime = 0;
 
         SetMoveMode(ACTION_MODE.ACT_MODE_BLOWOFF);
 	}
@@ -133,6 +138,7 @@ public class CharAction : MonoBehaviour {
 
 
             ExecBlowoff();
+
 
             break;
         // 自由歩行
@@ -216,6 +222,7 @@ public class CharAction : MonoBehaviour {
             infoStr += "BlowoffVector: " + m_vectorToMove.ToString() + "Speed:" + m_vectorToMove.magnitude + "\n";
             infoStr += "Velocity:" + rb.velocity.ToString() + "Speed:" + rb.velocity.magnitude + "\n";
             infoStr += "Action Mode: " + m_actMode + "BlowOff:" + bBlowOff + "\n";
+            infoStr += "Dist / Sec : " + distant.magnitude + "\n";
             scr_GUIText.instance.AddText(infoStr);
         }
     }
@@ -255,6 +262,15 @@ public class CharAction : MonoBehaviour {
 
         // 重力の適用
         ApplyGravity();
+
+        elapsedTime += Time.fixedDeltaTime;
+        if( elapsedTime >= 1.0f )
+        {
+            distant = transform.position - startPos;
+
+            elapsedTime = 0;
+            startPos = transform.position;
+        }
     }
     
     //---------------------------------------------------------------
@@ -280,11 +296,14 @@ public class CharAction : MonoBehaviour {
 
         bBlowOff = true;
 
-        rb.velocity = Vector3.zero;
+        rb.velocity = Vector3.Scale(rb.velocity, new Vector3(0.25f, 0.1f, 0.25f));
         rb.angularVelocity = Vector3.zero;
 
         rb.AddForce(m_vectorToMove, mode);
 
+        elapsedTime = 0;
+        startPos = transform.position;
+        distant = transform.position - startPos;
     }
 
     //---------------------------------------------------------------
@@ -294,8 +313,7 @@ public class CharAction : MonoBehaviour {
     //---------------------------------------------------------------
     private void ApplyGravity()
     {
-        rb.AddForce(0.0f, -m_gravity / 60.0f, 0.0f, ForceMode.Acceleration);
-//        rb.AddForce(m_vectorToMoveInverse, ForceMode.Acceleration);
+        rb.AddForce(0.0f, -m_gravity, 0.0f, ForceMode.Force);
     }
 
     //---------------------------------------------------------------
