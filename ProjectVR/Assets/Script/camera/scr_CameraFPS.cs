@@ -27,7 +27,7 @@ public class scr_CameraFPS : MonoBehaviour {
 	void Start ()
     {
         m_camera = GetComponent<Camera>();
-        m_targetObj = GameObject.Find("DummyKing");
+        m_targetObj = GameObject.Find("kings");
 
         totalRotation = Quaternion.identity;
         offsetHeight = 2.0f;

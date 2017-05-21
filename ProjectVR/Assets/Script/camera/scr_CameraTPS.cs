@@ -33,7 +33,7 @@ public class scr_CameraTPS : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         m_camera = GetComponent<Camera>();
-		m_targetObj = GameObject.Find("DummyKing");
+		m_targetObj = GameObject.Find("kings");
         m_targetPos = m_targetObj.transform.position;
 
 //        totalRotation = Quaternion.identity;

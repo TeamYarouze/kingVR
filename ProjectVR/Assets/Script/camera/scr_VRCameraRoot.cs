@@ -6,7 +6,8 @@ using UnityEngine.VR;
 public class scr_VRCameraRoot : MonoBehaviour {
 
     public GameObject king = null;
-    public float cameraHeight = 2.0f;
+    private float cameraHeight = 1.5f;
+    private float cameraForward = 2.0f;
 
     private Quaternion cameraRotation;
     public Quaternion CameraRotation
@@ -24,7 +25,7 @@ public class scr_VRCameraRoot : MonoBehaviour {
 	void Start () {
         if( !king )
         {
-    		king = GameObject.Find("DummyKing");
+    		king = GameObject.Find("kings");
         }
 
 	}
@@ -74,6 +75,7 @@ public class scr_VRCameraRoot : MonoBehaviour {
         Vector3 objPos = transform.position;
         objPos = kingPos;
         objPos.y += cameraHeight;
+        objPos.x += cameraForward;
         transform.position = objPos;        
 
     }
