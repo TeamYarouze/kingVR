@@ -9,3 +9,7 @@ EditorBuildSettings:
     path: Assets/Scene/bootSequence.unity
   - enabled: 1
     path: Assets/Scene/Stage000/Stage000.unity
+  - enabled: 0
+    path: Assets/Scene/ModelViewer.unity
+  - enabled: 0
+    path: Assets/Scene/SandBox.unity
