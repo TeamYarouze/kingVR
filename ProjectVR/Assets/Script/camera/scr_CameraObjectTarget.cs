@@ -24,6 +24,8 @@ public class scr_CameraObjectTarget : MonoBehaviour {
     private float angle_pitch;
     public float Angle_Yaw { get { return angle_yaw; } }
     public float Anble_Pitch { get { return angle_pitch; } }
+
+    private Vector3 m_offsetPos;
     
     [SerializeField]
     private GameObject m_targetObj;
@@ -50,6 +52,8 @@ public class scr_CameraObjectTarget : MonoBehaviour {
         m_targetDistance = TARGET_DISTANCE;
         CalcOffsetVector(out m_offsetVector);
 
+        m_offsetPos = Vector3.zero;
+
         target_yaw = 0.0f;
         target_pitch = 0.0f;
 	}
@@ -65,6 +69,9 @@ public class scr_CameraObjectTarget : MonoBehaviour {
         if( rh > -0.1f && rh < 0.1f ) rh = 0.0f;
         float rv = Input.GetAxis("Vertical2");
         if( rv > -0.1f && rv < 0.1f ) rv = 0.0f;
+
+        float dh = Input.GetAxis("D-Horizontal");
+        float dv = Input.GetAxis("D-Vertical");
 
         float RShoulder = Input.GetAxis("R2");
         float LShoulder = Input.GetAxis("L2");
@@ -90,6 +97,7 @@ public class scr_CameraObjectTarget : MonoBehaviour {
 #endif//
 
         ChangeTargetDistance(L2, R2);
+        UpdateOffsetPosition(dv, dh);
         AroundRotate(rv, rh);
 
         // ターゲットOBJを回転
@@ -112,9 +120,9 @@ public class scr_CameraObjectTarget : MonoBehaviour {
         Quaternion rot = Quaternion.Euler(angle_pitch, angle_yaw, 0.0f);
 
         Vector3 rotatedVector = rot * m_offsetVector;
-        Vector3 lookAt = m_targetPos;
+        Vector3 lookAt = m_targetPos + m_offsetPos;
         
-        m_camera.transform.position = m_targetPos + (rotatedVector * m_targetDistance);
+        m_camera.transform.position = m_targetPos + m_offsetPos + (rotatedVector * m_targetDistance);
         m_camera.transform.LookAt(lookAt);
     }
 
@@ -131,20 +139,16 @@ public class scr_CameraObjectTarget : MonoBehaviour {
 
     //--------------------------------------------------------------------
     /*
-        @brief      ターゲットOBJへの周りを移動する
+        @brief      ターゲットOBJへのオフセット座標を更新する
     */
     //--------------------------------------------------------------------
-    void AroundMove(float v, float h)
+    void UpdateOffsetPosition(float v, float h)
     {
-        float moveX = h * GameDefine.FPSDeltaScale();
-        float moveY = v * GameDefine.FPSDeltaScale();
+        float moveX = h * 0.1f * GameDefine.FPSDeltaScale();
+        float moveY = v * 0.1f * GameDefine.FPSDeltaScale();
 
-        Vector3 pos = m_camera.transform.position;
-
-        pos.x += moveX;
-        pos.y += moveY;
-
-        m_camera.transform.position = pos;
+        m_offsetPos.x += moveX;
+        m_offsetPos.y += moveY;
     }
 
     void ChangeTargetDistance(float forward, float back)
