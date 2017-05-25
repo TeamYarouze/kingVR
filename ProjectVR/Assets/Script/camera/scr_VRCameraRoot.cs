@@ -6,8 +6,8 @@ using UnityEngine.VR;
 public class scr_VRCameraRoot : MonoBehaviour {
 
     public GameObject king = null;
-    private float cameraHeight = 1.5f;
-    private float cameraForward = 2.0f;
+    private float cameraHeight = 2.3f;
+    private float cameraForward = -0.35f;
 
     private Quaternion cameraRotation;
     public Quaternion CameraRotation
