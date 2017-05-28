@@ -94,6 +94,7 @@ public class CharAction : MonoBehaviour {
         bBlowOff = false;
         // 試しにRocketをセット
         EquipItem(GameObject.Find("Rocket"));
+        /* ToDo Prefabからのインスタンス化 */
 
         elapsedTime = 0;
 

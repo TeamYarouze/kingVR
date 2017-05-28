@@ -22,6 +22,19 @@ public class ItemBase : MonoBehaviour {
         get { return m_ID; }
     }
 
+    protected GameDefine.ITEM_TYPE m_type;
+    public GameDefine.ITEM_TYPE Type
+    {
+        set { m_type = value; }
+        get { return m_type; }
+    }
+
+    protected int m_reloadTime;
+    public int ReloadTime
+    {
+        get { return m_reloadTime; }
+    }
+
     public enum EItemUseState
     {
         ITEM_STAT_READY,    // 使用前
@@ -35,11 +48,20 @@ public class ItemBase : MonoBehaviour {
         get { return m_state; }
     }
 
+    protected int m_useType;
+    public int UseType
+    {
+        get { return m_useType; }
+    }
+
 	// Use this for initialization
 	public void Start () {
 		attachedObject = null;
         objScript = null;
         m_state = EItemUseState.ITEM_STAT_READY;
+        m_reloadTime = 0;
+        m_type = GameDefine.ITEM_TYPE.ITEM_TYPE_INVALID;
+        m_useType = 0;
 	}
 	
 	// Update is called once per frame
@@ -55,6 +77,31 @@ public class ItemBase : MonoBehaviour {
     public bool OnFire()
     {
         return false;
+    }
+
+    //---------------------------------------------------------------
+    /*
+        @brief      アイテム使用時パラメータ設定
+    */
+    //---------------------------------------------------------------
+    public Vector3 SetParameter()
+    {
+        return Vector3.zero;
+    }
+
+    //---------------------------------------------------------------
+    /*
+        @brief      リロードタイムの更新
+    */
+    //---------------------------------------------------------------
+    public void UpdateReloadTime()
+    {
+        if( m_state != EItemUseState.ITEM_STAT_USING )
+        {
+            return;
+        }
+
+        m_reloadTime++;
     }
 
     //---------------------------------------------------------------

@@ -10,9 +10,14 @@ public class ItemRocket : ItemBase {
  
 	// Use this for initialization
 	new public void Start () {
+        base.Start();
+
         m_Angle = RocketAngle;
         m_Power = RocketPower;
         m_Gravity = RocketGravity;
+
+        m_type = GameDefine.ITEM_TYPE.ITEM_TYPE_ROCKET;
+        m_useType = (GameDefine.ItemUseType_UseAgain | GameDefine.ItemUseType_Reload | GameDefine.ItemUseType_BtnTrigger);
 	}
 	
 	// Update is called once per frame
@@ -59,5 +64,18 @@ public class ItemRocket : ItemBase {
         }
 
         return false;
+    }
+
+    //---------------------------------------------------------------
+    /*
+        @brief      パラメータ設定
+    */
+    //---------------------------------------------------------------
+    new public Vector3 SetParameter()
+    {
+
+
+
+        return Vector3.zero;
     }
 }
