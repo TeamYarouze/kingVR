@@ -54,14 +54,32 @@ public class ItemBase : MonoBehaviour {
         get { return m_useType; }
     }
 
+    private float elapsedTime;
+
+    void Awake()
+    {
+        attachedObject = null;
+        objScript = null;
+        m_state = EItemUseState.ITEM_STAT_READY;
+        
+        m_type = GameDefine.ITEM_TYPE.ITEM_TYPE_INVALID;
+        m_useType = 0;
+        m_reloadTime = 0;
+        elapsedTime = 0.0f;
+    }
+
 	// Use this for initialization
 	public void Start () {
+        /*
 		attachedObject = null;
         objScript = null;
         m_state = EItemUseState.ITEM_STAT_READY;
-        m_reloadTime = 0;
+        
         m_type = GameDefine.ITEM_TYPE.ITEM_TYPE_INVALID;
         m_useType = 0;
+        m_reloadTime = 0;
+        elapsedTime = 0.0f;
+        */
 	}
 	
 	// Update is called once per frame
@@ -76,18 +94,11 @@ public class ItemBase : MonoBehaviour {
     //---------------------------------------------------------------
     public bool OnFire()
     {
+        elapsedTime = 0.0f;
+        m_reloadTime = 0;
         return false;
     }
 
-    //---------------------------------------------------------------
-    /*
-        @brief      アイテム使用時パラメータ設定
-    */
-    //---------------------------------------------------------------
-    public Vector3 SetParameter()
-    {
-        return Vector3.zero;
-    }
 
     //---------------------------------------------------------------
     /*
@@ -101,7 +112,12 @@ public class ItemBase : MonoBehaviour {
             return;
         }
 
-        m_reloadTime++;
+        elapsedTime += Time.deltaTime;
+        if( elapsedTime >= 1.0f )
+        {
+            elapsedTime = 0.0f;
+            m_reloadTime++;
+        }
     }
 
     //---------------------------------------------------------------

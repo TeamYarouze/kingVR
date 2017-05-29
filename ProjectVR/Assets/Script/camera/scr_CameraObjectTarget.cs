@@ -92,8 +92,8 @@ public class scr_CameraObjectTarget : MonoBehaviour {
             L2 = -RShoulder;
         }
 #else
-        if( LRShoulder < -0.25f ) L2 = -LRShoulder;
-        if( LRShoulder > 0.25f ) R2 = LRShoulder;
+        if( LShoulder < -0.25f ) L2 = -LShoulder;
+        if( RShoulder > 0.25f ) R2 = RShoulder;
 #endif//
 
         ChangeTargetDistance(L2, R2);

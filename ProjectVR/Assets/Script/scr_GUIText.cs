@@ -118,9 +118,12 @@ public class scr_GUIText : MonoBehaviour {
         if( !bGUIDraw ) return;
 
         GUI.Label(new Rect(1, 1, 300, 100), "FPS:"+fps+"\nTargetFPS: " + Application.targetFrameRate );
+
+#if UNITY_PS4
         GUI.Label(new Rect(1, 110, 300, 100), "RefleshRate : " + voInfo.refreshRate + "\n" +
                                               "DeltaTime : "+Time.deltaTime + "\n" + 
                                               "FixedDeltaTime : " + Time.fixedDeltaTime + "\n");
+#endif  //
     }
 
     private void CalcFPS()

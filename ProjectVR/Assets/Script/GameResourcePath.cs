@@ -7,6 +7,8 @@ public static class GameResourcePath {
     private static string BootSequence = "Scene/bootSequence";
     private static string Stage000 = "Scene/Stage000/Stage000";
 
+    private static string Rocket = "Prefab/Rocket";
+
     public static string GetSceneName(GameModeData.GAMEMODE mode)
     {
         switch( mode )
@@ -18,6 +20,11 @@ public static class GameResourcePath {
         }
 
         return BootSequence;
+    }
+
+    public static string GetRocketPath()
+    {
+        return Rocket;
     }
 
 }

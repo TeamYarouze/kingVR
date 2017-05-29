@@ -92,9 +92,9 @@ public class CharAction : MonoBehaviour {
         m_StartRot = transform.rotation;
 
         bBlowOff = false;
-        // 試しにRocketをセット
-        EquipItem(GameObject.Find("Rocket"));
-        /* ToDo Prefabからのインスタンス化 */
+
+        GameObject rocket = (GameObject)Instantiate(Resources.Load(GameResourcePath.GetRocketPath()), transform.position, transform.rotation);
+        EquipItem(rocket);
 
         elapsedTime = 0;
 
@@ -279,21 +279,9 @@ public class CharAction : MonoBehaviour {
         @brief      ぶっ飛ぶ設定
     */
     //---------------------------------------------------------------
-    public void SetupBlowoffParam(float angle, float power, ForceMode mode)
+    public void SetupBlowoffParam(Vector3 velocity, ForceMode mode)
     {
-        Vector3 vForward = Vector3.Normalize(transform.forward);
-
-        Quaternion rot = Quaternion.AngleAxis(-angle, transform.right);
-
-        m_vectorToMove = rot * vForward;
-        m_vectorToMove *= power;
-
-   
-        Debug.Log("Rocket Vector:" + m_vectorToMove.ToString() + "Speed:" + m_vectorToMove.magnitude);
-
-        m_vectorToMoveInverse = -m_vectorToMove * 0.25f;
-
-        m_power = power;
+        m_vectorToMove = velocity;
 
         bBlowOff = true;
 

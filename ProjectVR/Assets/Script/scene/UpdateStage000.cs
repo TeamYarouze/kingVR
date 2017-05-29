@@ -44,4 +44,5 @@ public class UpdateStage000 : Singleton<UpdateStage000> {
             GameSceneManager.Instance.ChangeScene(GameModeData.GAMEMODE.GAME_MODE_BOOT);
         }
 	}
+
 }

@@ -28,6 +28,7 @@ public class ItemRocket : ItemBase {
             return;
         }
 
+        UpdateReloadTime();
 
         OnFire();
 	}
@@ -53,13 +54,19 @@ public class ItemRocket : ItemBase {
     new public bool OnFire()
     {
         
-
         if( Input.GetButtonDown("Circle") )
         {
             m_Angle = RocketAngle;
             m_Power = RocketPower;
-            objScript.SetupBlowoffParam(m_Angle, m_Power, ForceMode.VelocityChange);
+
+            base.OnFire();
+
+            Vector3 velocity = SetupRocketOrbit();
+            objScript.SetupBlowoffParam(velocity, ForceMode.VelocityChange);
+
             m_state = EItemUseState.ITEM_STAT_USING;
+
+
             return true;
         }
 
@@ -68,14 +75,24 @@ public class ItemRocket : ItemBase {
 
     //---------------------------------------------------------------
     /*
-        @brief      パラメータ設定
+        @brief      ロケット軌道設定
     */
     //---------------------------------------------------------------
-    new public Vector3 SetParameter()
+    public Vector3 SetupRocketOrbit()
     {
+        if( !IsAttachedObject() )
+        {
+            return Vector3.zero;
+        }
 
+        Vector3 moveVector = Vector3.zero;
 
+        Vector3 vForward = attachedObject.transform.forward;
+        Quaternion rot = Quaternion.AngleAxis(-m_Angle, attachedObject.transform.right);
 
-        return Vector3.zero;
+        moveVector = rot * vForward;
+        moveVector *= m_Power;
+
+        return moveVector;
     }
 }
