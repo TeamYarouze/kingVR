@@ -18,6 +18,11 @@ public class CharAction : MonoBehaviour {
     public float moveSpeed = 1.0f;
 
     private Rigidbody rb = null;
+    public Rigidbody RigidBody
+    {
+        get { return rb; }
+    }
+
     private Animator anim = null;							// キャラにアタッチされるアニメーターへの参照
 //	private AnimatorStateInfo currentBaseState;			// base layerで使われる、アニメーターの現在の状態の参照
 
@@ -96,6 +101,9 @@ public class CharAction : MonoBehaviour {
         GameObject rocket = (GameObject)Instantiate(Resources.Load(GameResourcePath.GetRocketPath()), transform.position, transform.rotation);
         EquipItem(rocket);
 
+        GameObject weight = (GameObject)Instantiate(Resources.Load(GameResourcePath.GetWeightPath()), transform.position, transform.rotation);
+        EquipItem(weight);
+
         elapsedTime = 0;
 
         SetMoveMode(ACTION_MODE.ACT_MODE_BLOWOFF);
@@ -106,7 +114,7 @@ public class CharAction : MonoBehaviour {
     //---------------------------------------------------------------
 	void Update ()
     {
-
+        
         ChangeMoveMode();
 
         // リセット処理
@@ -216,6 +224,8 @@ public class CharAction : MonoBehaviour {
         }
         */
 
+        CheckWorldClip();
+
         {
             string infoStr = "----------------- King Param\n";
             infoStr += "Pos:" + transform.position.ToString() + "\n";
@@ -285,7 +295,7 @@ public class CharAction : MonoBehaviour {
 
         bBlowOff = true;
 
-        rb.velocity = Vector3.Scale(rb.velocity, new Vector3(1.0f, 0.0f, 1.0f));
+        rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
 
         rb.AddForce(m_vectorToMove, mode);
@@ -302,7 +312,7 @@ public class CharAction : MonoBehaviour {
     //---------------------------------------------------------------
     private void ApplyGravity()
     {
-        rb.AddForce(0.0f, -m_gravity, 0.0f, ForceMode.Force);
+        rb.AddForce(0.0f, -m_gravity, 0.0f, ForceMode.Acceleration);
     }
 
     //---------------------------------------------------------------
@@ -438,7 +448,29 @@ public class CharAction : MonoBehaviour {
 
             rb.useGravity = false;
             rb.isKinematic = false;
+
+            for(int id = 0; id < m_equipNum; id++)
+            {
+                m_arrayEquipItem[id].GetComponent<ItemBase>().ResetItem();
+            }
+
         }
+    }
+
+    void CheckWorldClip()
+    {
+        Vector3 pos = transform.position;
+
+        if( pos.y < 0.0f )
+        {
+            pos.y = 0.0f;
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            rb.AddForce(Vector3.zero, ForceMode.VelocityChange);
+        }
+
+        transform.position = pos;
+
     }
 
 }

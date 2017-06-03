@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VR;
 #if UNITY_PS4
 using UnityEngine.PS4;
 #endif  //
@@ -61,14 +62,6 @@ public class scr_GUIText : MonoBehaviour {
         bDraw = false;
         bGUIDraw = false;
 
-#if UNITY_PS4
-        {
-            int ret = Utility.GetVideoOutResolutionStatus(0, out voInfo);
-            if( ret == 0 )
-            {
-            }
-        }
-#endif  // UNITY_PS4
  	}
 	
 	// Update is called once per frame
@@ -82,6 +75,12 @@ public class scr_GUIText : MonoBehaviour {
             bDraw = !bDraw;
             bGUIDraw = !bGUIDraw;
         }
+
+        // VRモード時は描画しない
+        if( VRSettings.enabled )
+        {
+            bDraw = false;
+        }        
 
         textObj.GetComponent<GUIText>().text = "";
 	}

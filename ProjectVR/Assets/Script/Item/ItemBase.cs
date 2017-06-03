@@ -122,6 +122,19 @@ public class ItemBase : MonoBehaviour {
 
     //---------------------------------------------------------------
     /*
+        @brief      リセット
+    */
+    //---------------------------------------------------------------
+    public void ResetItem()
+    {
+        elapsedTime = 0.0f;
+        m_reloadTime = 0;   
+
+        m_state = EItemUseState.ITEM_STAT_READY;
+    }
+
+    //---------------------------------------------------------------
+    /*
         @brief      オブジェクトへのアタッチ
     */
     //---------------------------------------------------------------
@@ -160,5 +173,7 @@ public class ItemBase : MonoBehaviour {
         if( attachedObject ) return true;
         return false;
     }
+
+
 
 }

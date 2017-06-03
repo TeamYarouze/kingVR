@@ -45,6 +45,17 @@ public class scr_VRCameraRoot : MonoBehaviour {
             forward = Vector3.Normalize(transformedPos);
         }
         */
+
+        if( VRSettings.enabled )
+        {
+            cameraHeight = 2.3f;
+            cameraForward = -0.8f;
+        }
+        else
+        {
+            cameraForward = -0.35f;
+            cameraHeight = 2.3f;
+        }
 	}
 
     void LateUpdate()
