@@ -76,11 +76,13 @@ public class scr_GUIText : MonoBehaviour {
             bGUIDraw = !bGUIDraw;
         }
 
+        /*
         // VRモード時は描画しない
         if( VRSettings.enabled )
         {
             bDraw = false;
-        }        
+        }
+        */       
 
         textObj.GetComponent<GUIText>().text = "";
 	}

@@ -52,12 +52,16 @@ public class scr_CameraFPS : MonoBehaviour {
             RotateCamera(rv, rh);
         }
 
+        transform.position = transform.parent.position;
+
+        /*
         {
             string infoStr = "";
             infoStr += "Angle Yaw : " + angle_yaw + "\n";
             infoStr += "Angle Pitch : " + angle_pitch + "\n";
             scr_GUIText.instance.AddText(infoStr);
         }
+        */
     }
 
     //---------------------------------------------------------------

@@ -39,7 +39,7 @@ public class UpdateStage000 : Singleton<UpdateStage000> {
 
         cameraMngr.ChangeCameraMode();
 
-        if( Input.GetButtonDown("Option") )
+        if( Input.GetButtonDown("R3") )
         {
             GameSceneManager.Instance.ChangeScene(GameModeData.GAMEMODE.GAME_MODE_BOOT);
         }

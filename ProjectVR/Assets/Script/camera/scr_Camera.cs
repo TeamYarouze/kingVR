@@ -64,6 +64,7 @@ public class scr_Camera : MonoBehaviour {
 //            m_camera.transform.rotation = targetObj.transform.rotation;            
         }
         
+        /*
         {
             Vector3 forward = Vector3.Normalize(m_camera.transform.forward);
             Vector3 right = Vector3.Normalize(m_camera.transform.right);
@@ -75,6 +76,7 @@ public class scr_Camera : MonoBehaviour {
             infoStr += "Up:" + up.ToString() + "\n";
             GameObject.Find("Text").GetComponent<scr_GUIText>().AddText(infoStr);
         }
+        */
     }
 
     void ResetCamera()

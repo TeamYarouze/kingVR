@@ -22,7 +22,7 @@ public class UpdateBootSequence : MonoBehaviour {
 
         if( GameFadeManager.Instance.IsFade() ) return;
 		
-        if( Input.GetButtonDown("Option") )
+        if( Input.GetButtonDown("R3") )
         {
             // シーン遷移テスト!!!!!
             GameSceneManager.Instance.ChangeScene(GameModeData.GAMEMODE.GAME_MODE_STAGE);           

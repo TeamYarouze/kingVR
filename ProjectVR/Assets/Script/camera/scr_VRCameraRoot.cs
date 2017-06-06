@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VR;
+#if UNITY_PS4
+using UnityEngine.PS4;
+using UnityEngine.PS4.VR;
+#endif  
 
 public class scr_VRCameraRoot : MonoBehaviour {
 
@@ -21,11 +25,21 @@ public class scr_VRCameraRoot : MonoBehaviour {
         get { return forward; }
     }
 
+    private Vector3 outhmdPositionRaw;
+    private Vector3 outhmdPositionUnity;
+
+    private Vector3 offsetPos;
+
 	// Use this for initialization
 	void Start () {
         if( !king )
         {
     		king = GameObject.Find("kings");
+
+            InputTracking.Recenter();
+            offsetPos = Vector3.zero;
+            // 初期位置を固定したい
+            MoveExe();
         }
 
 	}
@@ -50,12 +64,15 @@ public class scr_VRCameraRoot : MonoBehaviour {
         {
             cameraHeight = 2.3f;
             cameraForward = -0.8f;
+
+            UpdateHmdPosition();
         }
         else
         {
             cameraForward = -0.35f;
             cameraHeight = 2.3f;
         }
+
 	}
 
     void LateUpdate()
@@ -64,12 +81,20 @@ public class scr_VRCameraRoot : MonoBehaviour {
 
         Vector3 trackingPos = InputTracking.GetLocalPosition(VRNode.CenterEye);
         {
-            string strInfo = "Tracking Pos:";
+            string strInfo = "";
+            strInfo += "Tracking Pos:";
             strInfo += trackingPos.ToString() + "\n";
 
             Vector3 camPos = Camera.main.transform.position;
             strInfo += "Camera Pos:";
             strInfo += camPos.ToString() + Camera.main.name + "\n";
+
+            Vector3 camRootPos = transform.position;
+            strInfo += "CameraRoot Pos:";
+            strInfo += camRootPos.ToString() + "\n";
+
+            strInfo += "Raw: " + outhmdPositionRaw.ToString() + "\n";
+            strInfo += "Unity: " + outhmdPositionUnity.ToString() + "\n";
 
             scr_GUIText.instance.AddText(strInfo);
         }
@@ -82,13 +107,36 @@ public class scr_VRCameraRoot : MonoBehaviour {
     {
         if( !king ) return;
 
+//        float horizontal = Input.GetAxis("Horizontal");      
+//        offsetPos.x += (2.0f * (horizontal * GameDefine.FPSDeltaScale()));
+
         Vector3 kingPos = king.transform.position;
         Vector3 objPos = transform.position;
         objPos = kingPos;
+        objPos.x += offsetPos.x;
         objPos.y += cameraHeight;
-        objPos.x += cameraForward;
-        transform.position = objPos;        
+
+        transform.position = objPos;
+
+        // HMDの位置を固定する
+//        Vector3 trackingPos = InputTracking.GetLocalPosition(VRNode.CenterEye);
+//        transform.position = objPos - trackingPos;
 
     }
+
+#if UNITY_PS4
+    /**
+     *  @brief      PSVR HMDの位置
+     */
+    private void UpdateHmdPosition()
+    {
+        int hmdHandle = PlayStationVR.GetHmdHandle();
+        
+        Tracker.GetTrackedDevicePosition(hmdHandle, PlayStationVRSpace.Raw, out outhmdPositionRaw);
+                
+        Tracker.GetTrackedDevicePosition(hmdHandle, PlayStationVRSpace.Unity, out outhmdPositionUnity);
+
+    }
+#endif  //
 
 }
