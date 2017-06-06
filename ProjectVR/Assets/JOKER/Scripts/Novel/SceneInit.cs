@@ -330,7 +330,7 @@ public class SceneInit : MonoBehaviour {
         //20170606_パッド対応
 
         // シナリオをすすめる
-        if (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Return) || Input.GetKey(KeyCode.KeypadEnter))
+        if (Input.GetButton("Circle") || Input.GetButton("Cross") || Input.GetButton("Square") || Input.GetButton("Triangle"))
         {
             //skip中にクリックされた場合、Skipを止める
             if (StatusManager.FlagSkiiping == true)
@@ -342,7 +342,7 @@ public class SceneInit : MonoBehaviour {
         }
 
         // スキップ開始
-        if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
+        if (Input.GetButton("L1") || Input.GetButton("R1") || Input.GetButton("L2") || Input.GetButton("R2"))
         {
             //skip中にクリックされた場合、Skipを止める
             if (StatusManager.FlagSkiiping == true)
