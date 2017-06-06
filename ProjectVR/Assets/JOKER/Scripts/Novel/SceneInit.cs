@@ -308,7 +308,7 @@ public class SceneInit : MonoBehaviour {
 		}
 
 
-		/*
+        /*
 		if(Input.GetMouseButtonDown(0)){
 			Vector3 screenPoint = Camera.main.Button_(gameObject.transform.position);
 			Vector3 newVector = Camera.main.ScreenToWorldPoint( new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
@@ -327,9 +327,35 @@ public class SceneInit : MonoBehaviour {
 
 */
 
+        //20170606_パッド対応
 
+        // シナリオをすすめる
+        if (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Return) || Input.GetKey(KeyCode.KeypadEnter))
+        {
+            //skip中にクリックされた場合、Skipを止める
+            if (StatusManager.FlagSkiiping == true)
+            {
+                StatusManager.FlagSkiiping = false;
+            }
 
-	}
+            gameManager.clickNextOrder();
+        }
+
+        // スキップ開始
+        if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
+        {
+            //skip中にクリックされた場合、Skipを止める
+            if (StatusManager.FlagSkiiping == true)
+            {
+                StatusManager.FlagSkiiping = false;
+            }
+            else
+            {
+                StartCoroutine("startSkip");
+            }
+        }
+
+    }
 
 
 	private IEnumerator ClickButton() {
