@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VR;
 
-public class UpdateLoading : Singleton<UpdateLoading> {
+public class UpdateTitle : Singleton<UpdateTitle> {
 
     // ※消さないでください
     void Awake()
