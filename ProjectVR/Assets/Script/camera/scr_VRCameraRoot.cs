@@ -107,13 +107,13 @@ public class scr_VRCameraRoot : MonoBehaviour {
     {
         if( !king ) return;
 
-//        float horizontal = Input.GetAxis("Horizontal");      
-//        offsetPos.x += (2.0f * (horizontal * GameDefine.FPSDeltaScale()));
+        float vertical = Input.GetAxis("Vertical");      
+        offsetPos.z += (-1.0f * (vertical * GameDefine.FPSDeltaScale()));
 
         Vector3 kingPos = king.transform.position;
         Vector3 objPos = transform.position;
         objPos = kingPos;
-        objPos.x += offsetPos.x;
+        objPos.z += offsetPos.z;
         objPos.y += cameraHeight;
 
         transform.position = objPos;

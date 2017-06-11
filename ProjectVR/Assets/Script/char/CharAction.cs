@@ -26,7 +26,8 @@ public class CharAction : MonoBehaviour {
     private Animator anim = null;							// キャラにアタッチされるアニメーターへの参照
 //	private AnimatorStateInfo currentBaseState;			// base layerで使われる、アニメーターの現在の状態の参照
 
-    private UpdateStage000 updater = null;
+//    private UpdateStage000 updater = null;
+    private UpdateBase updater = null;
     private Camera m_camera = null;
     private GameObject m_VRCameraRoot;
 
@@ -76,12 +77,12 @@ public class CharAction : MonoBehaviour {
     */
     //---------------------------------------------------------------
 	void Start () {
-        updater = UpdateStage000.Instance;
+        updater = UpdateBase.Instance;
 
         // RigidBodyの取得
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
-        rb.useGravity = false;
+        rb.useGravity = true;
         rb.isKinematic = false;
 
         m_camera = updater.CameraMngr.GetCurrentCameraComponent();
@@ -272,7 +273,7 @@ public class CharAction : MonoBehaviour {
         // 加速度の適用
 
         // 重力の適用
-        ApplyGravity();
+//        ApplyGravity();
 
         elapsedTime += Time.fixedDeltaTime;
         if( elapsedTime >= 1.0f )
@@ -303,6 +304,9 @@ public class CharAction : MonoBehaviour {
         elapsedTime = 0;
         startPos = transform.position;
         distant = transform.position - startPos;
+
+        // パーティクルテスト
+        
     }
 
     //---------------------------------------------------------------
@@ -446,7 +450,7 @@ public class CharAction : MonoBehaviour {
             transform.position = m_StartPos;
             transform.rotation = m_StartRot;
 
-            rb.useGravity = false;
+            rb.useGravity = true;
             rb.isKinematic = false;
 
             for(int id = 0; id < m_equipNum; id++)
@@ -472,5 +476,4 @@ public class CharAction : MonoBehaviour {
         transform.position = pos;
 
     }
-
 }

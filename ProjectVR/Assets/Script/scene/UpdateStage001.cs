@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VR;
 
-public class UpdateStage001 : Singleton<UpdateStage001> {
-
-    private CameraManager cameraMngr = null;
-    public CameraManager CameraMngr
+public class UpdateStage001 : UpdateBase
+{
+    private GameObject DustStorm;
+    public ParticleSystemBase particlBase
     {
-        get { return cameraMngr; }
+        get { return DustStorm.GetComponent<ParticleSystemBase>(); }
     }
 
     void Awake()
@@ -26,7 +26,8 @@ public class UpdateStage001 : Singleton<UpdateStage001> {
 	// Use this for initialization
 	void Start () {
 
-
+        DustStorm = GameObject.Find("DustStorm");
+        particlBase.Play();
 	}
 	
 	// Update is called once per frame

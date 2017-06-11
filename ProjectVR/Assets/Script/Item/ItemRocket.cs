@@ -160,11 +160,10 @@ public class ItemRocket : ItemBase {
 
         Quaternion rot = Quaternion.AngleAxis(-angle, attachedObject.transform.right);
 
-        vBase = Vector3.Normalize(vBase);
-        vBase = Vector3.Scale(vBase, new Vector3(1.0f, 0.0f, 0.0f));
-
-        moveVector = rot * vBase;
-        moveVector *= power;
+        Vector3 vWork = Vector3.Scale(vBase, new Vector3(0.0f, 0.0f, 1.0f));
+        vWork = Vector3.Normalize(vWork);
+        vWork *= power;
+        moveVector = rot * vWork;
 
         vOut = moveVector;
         return true;

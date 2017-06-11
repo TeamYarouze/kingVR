@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VR;
 
-public class UpdateStage000 : Singleton<UpdateStage000> {
-
+//public class UpdateStage000 : Singleton<UpdateStage000> {
+public class UpdateStage000 : UpdateBase
+{
+    /*
     private CameraManager cameraMngr = null;
     public CameraManager CameraMngr
     {
         get { return cameraMngr; }
     }
+    */
 
     void Awake()
     {

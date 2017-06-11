@@ -88,9 +88,15 @@ public class ItemWeight : ItemBase {
 
         Vector3 moveVector = Vector3.zero;
         Quaternion rot = Quaternion.AngleAxis(-angle, attachedObject.transform.right);
-        vBase = Vector3.Normalize(vBase);
-        moveVector = rot * vBase;
-        moveVector *= objScript.RigidBody.velocity.magnitude;
+
+        Vector3 vWork = Vector3.Scale(vBase, new Vector3(0.0f, 0.0f, 1.0f));
+        vWork = Vector3.Normalize(vWork);
+        vWork *= objScript.RigidBody.velocity.magnitude;
+//        vBase = Vector3.Normalize(vBase);
+//        moveVector = rot * vBase;
+//        moveVector *= objScript.RigidBody.velocity.magnitude;
+
+        moveVector = rot * vWork;
 
         vOut = moveVector;
     }
@@ -161,7 +167,7 @@ public class ItemWeight : ItemBase {
                 m_state = EItemUseState.ITEM_STAT_USING;
             }
 
-            CheckSpeedLimit(outVelocity, out outVelocity);
+//            CheckSpeedLimit(outVelocity, out outVelocity);
             objScript.SetupBlowoffParam(outVelocity, ForceMode.VelocityChange);
 
         }
