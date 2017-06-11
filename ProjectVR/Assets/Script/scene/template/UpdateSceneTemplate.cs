@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VR;
 
-public class UpdateSceneTemplate : Singleton<UpdateSceneTemplate> {
+public class UpdateSceneTemplate : UpdateBase {
 
     // ※消さないでください
     void Awake()

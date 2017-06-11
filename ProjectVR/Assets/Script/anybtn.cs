@@ -11,7 +11,11 @@ public class anybtn : MonoBehaviour {
 	void Start () {
 
         fuki = GameObject.Find("fukidashi");
-        modesel = transform.Find("ModeSelect").gameObject;
+//        modesel = transform.Find("ModeSelect").gameObject;
+        modesel = GameObject.Find("ModeSelectobj");
+
+        fuki.SetActive(true);
+        modesel.SetActive(false);
 	}
 	
 	// Update is called once per frame
