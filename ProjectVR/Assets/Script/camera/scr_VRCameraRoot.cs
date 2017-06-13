@@ -28,6 +28,12 @@ public class scr_VRCameraRoot : MonoBehaviour {
     private Vector3 outhmdPositionRaw;
     private Vector3 outhmdPositionUnity;
 
+    private Quaternion outhmdOrientation;
+    public Quaternion hmdOrientation
+    {
+        get { return outhmdOrientation; }
+    }
+
     private Vector3 offsetPos;
 
 	// Use this for initialization
@@ -64,14 +70,14 @@ public class scr_VRCameraRoot : MonoBehaviour {
         {
             cameraHeight = 2.3f;
             cameraForward = -0.8f;
-
-            UpdateHmdPosition();
         }
         else
         {
             cameraForward = -0.35f;
             cameraHeight = 2.3f;
         }
+
+        UpdateHmdPosition();
 
 	}
 
@@ -113,6 +119,7 @@ public class scr_VRCameraRoot : MonoBehaviour {
         Vector3 kingPos = king.transform.position;
         Vector3 objPos = transform.position;
         objPos = kingPos;
+        objPos.z += 0.5f;
         objPos.z += offsetPos.z;
         objPos.y += cameraHeight;
 
@@ -130,11 +137,22 @@ public class scr_VRCameraRoot : MonoBehaviour {
      */
     private void UpdateHmdPosition()
     {
-        int hmdHandle = PlayStationVR.GetHmdHandle();
+        if( VRSettings.enabled )
+        {
+
+            int hmdHandle = PlayStationVR.GetHmdHandle();
         
-        Tracker.GetTrackedDevicePosition(hmdHandle, PlayStationVRSpace.Raw, out outhmdPositionRaw);
+            Tracker.GetTrackedDevicePosition(hmdHandle, PlayStationVRSpace.Raw, out outhmdPositionRaw);
                 
-        Tracker.GetTrackedDevicePosition(hmdHandle, PlayStationVRSpace.Unity, out outhmdPositionUnity);
+            Tracker.GetTrackedDevicePosition(hmdHandle, PlayStationVRSpace.Unity, out outhmdPositionUnity);
+
+            Tracker.GetTrackedDeviceOrientation(hmdHandle, PlayStationVRSpace.Unity, out outhmdOrientation);
+        }
+        else
+        {
+            Camera camera = transform.GetChild(0).gameObject.GetComponent<Camera>();
+            outhmdOrientation = camera.transform.rotation;
+        }
 
     }
 #endif  //

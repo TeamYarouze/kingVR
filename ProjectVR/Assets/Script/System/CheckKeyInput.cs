@@ -24,6 +24,7 @@ public class CheckKeyInput : MonoBehaviour {
 
     private uint m_btnPush;
     private uint m_btnTrigger;
+    private uint m_btnRelease;
     private uint m_btnPrev;
 
     // Use this for initialization
@@ -31,6 +32,7 @@ public class CheckKeyInput : MonoBehaviour {
 		
         m_btnPush = 0;
         m_btnTrigger = 0;
+        m_btnRelease = 0;
         m_btnPrev = 0;
 	}
 	
@@ -42,11 +44,14 @@ public class CheckKeyInput : MonoBehaviour {
         bit = (uint)StringToButtonID("Triangle");
         if( Input.GetButton("Triangle") )
         {
+
             m_btnTrigger |= (~(m_btnPrev & bit) & bit);
+            m_btnRelease &= ~bit;
             m_btnPush |= bit;
         }
         else
         {
+            m_btnRelease |= (m_btnPrev & bit);
             m_btnPush &= ~bit;
             m_btnTrigger &= ~bit;
         }
@@ -154,7 +159,8 @@ public class CheckKeyInput : MonoBehaviour {
 
     public void OnGUI()
     {
-        GUI.TextField(new Rect(120.0f, 400.0f, 300, 40), "Push:" + Convert.ToString(m_btnPush, 2) + "\n" + 
-                                                         "Trigger:" + Convert.ToString(m_btnTrigger, 2) );
+        GUI.TextField(new Rect(120.0f, 400.0f, 300, 52), "Push:" + Convert.ToString(m_btnPush, 2) + "\n" + 
+                                                         "Trigger:" + Convert.ToString(m_btnTrigger, 2) + "\n" +
+                                                         "Release:" + Convert.ToString(m_btnRelease, 2) );
     }
 }

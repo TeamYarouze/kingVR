@@ -31,6 +31,22 @@ public class ItemRocket : ItemBase {
     private float ReloadLongAngle = 75.0f;
     [SerializeField]
     private float ReloadLongPower = 10.0f;
+
+    [SerializeField]
+    private int ReloadTimer = 3;
+    [SerializeField]
+    private float AddMaxAngle = 40.0f;
+    [SerializeField]
+    private float AddMaxPower = 30.0f;
+    [SerializeField]
+    private float InitialRocketAngle = 60.0f;
+    [SerializeField]
+    private float InitialRocketPower = 100.0f;
+
+    private float m_rocketPower;
+    private scr_VRCameraRoot scrCamera;
+
+    private Vector3 rotateAxis;
  
 	// Use this for initialization
 	new public void Start () {
@@ -43,6 +59,10 @@ public class ItemRocket : ItemBase {
         m_type = GameDefine.ITEM_TYPE.ITEM_TYPE_ROCKET;
         m_state = EItemUseState.ITEM_STAT_READY;
         m_useType = (GameDefine.ItemUseType_UseAgain | GameDefine.ItemUseType_Reload | GameDefine.ItemUseType_BtnTrigger);
+
+        scrCamera = GameObject.FindWithTag("CameraRoot").GetComponent<scr_VRCameraRoot>();
+        rotateAxis = Vector3.zero;
+        m_rocketPower = 0.0f;
 	}
 	
 	// Update is called once per frame
@@ -55,7 +75,14 @@ public class ItemRocket : ItemBase {
 
         UpdateReloadTime();
 
-        OnFire();
+//        OnFire();
+        
+        OnFire2();
+        // ウンコー
+        if( Input.GetButton("Triangle") )
+        {
+            m_state = EItemUseState.ITEM_STAT_READY;
+        }
 	}
 
     //---------------------------------------------------------------
@@ -144,6 +171,79 @@ public class ItemRocket : ItemBase {
     }
 
     //---------------------------------------------------------------
+    /*!
+        @brief      ロケット発射処理その２
+        @note       押してる間はパワーためる
+        　　　　　　　離したら発射
+    */
+    //---------------------------------------------------------------
+    public bool OnFire2()
+    {
+        if( m_state == EItemUseState.ITEM_STAT_USING )
+        {
+            if( m_reloadTime < ReloadTimer )
+            {
+                return false;
+            }
+        }
+
+        Vector3 vForward = Vector3.zero;
+        float angle = 0.0f;
+
+        if( Input.GetButton("Circle") )
+        {
+            m_rocketPower += 0.01f;
+            if( m_rocketPower >= 1.0f ) m_rocketPower = 1.0f;
+        }
+        else if( Input.GetButtonUp("Circle") )
+        {
+            Quaternion camRot = scrCamera.hmdOrientation;
+            float power = 0.0f;
+            if( m_state == EItemUseState.ITEM_STAT_READY )
+            {
+                vForward = attachedObject.transform.forward;
+                power = InitialRocketPower;
+                angle = InitialRocketAngle;
+            }
+            else if( m_state == EItemUseState.ITEM_STAT_USING )
+            {
+                vForward = objScript.RigidBody.velocity;
+                power = AddMaxPower;
+                angle = AddMaxAngle;
+            }
+
+            Vector3 outVelocity;
+//            bool bLaunch = SetupRocketOrbit(out outVelocity, vForward, camRot, power);
+            bool bLaunch = SetupRocketOrbit(out outVelocity, vForward, angle, power);
+
+            if( bLaunch )
+            {
+                objScript.SetupBlowoffParam(outVelocity, ForceMode.VelocityChange);
+            }
+
+            m_rocketPower = 0.0f;
+            m_state = EItemUseState.ITEM_STAT_USING;
+
+            base.OnFire();
+
+            return true;
+        }
+        // ウンコー
+        else if( Input.GetButton("Triangle") )
+        {
+            m_state = EItemUseState.ITEM_STAT_READY;
+        }
+        else
+        {
+            m_rocketPower -= 0.01f;
+            if( m_rocketPower < 0.0f ) m_rocketPower = 0.0f;
+        }
+
+
+        return false;
+    }
+
+    //---------------------------------------------------------------
     /*
         @brief      ロケット軌道設定
     */
@@ -157,13 +257,38 @@ public class ItemRocket : ItemBase {
         }
 
         Vector3 moveVector = Vector3.zero;
+        float speed = vBase.magnitude;
+        speed += power;
 
         Quaternion rot = Quaternion.AngleAxis(-angle, attachedObject.transform.right);
 
         Vector3 vWork = Vector3.Scale(vBase, new Vector3(0.0f, 0.0f, 1.0f));
         vWork = Vector3.Normalize(vWork);
-        vWork *= power;
+        vWork *= speed;
         moveVector = rot * vWork;
+
+        vOut = moveVector;
+        return true;
+    }
+
+    public bool SetupRocketOrbit(out Vector3 vOut, Vector3 vBase, Quaternion rot, float power)
+    {
+        if( !IsAttachedObject() )
+        {
+            vOut = Vector3.zero;
+            return false;
+        }
+
+        Vector3 moveVector = Vector3.zero;
+
+        float speed = vBase.magnitude;
+        speed += power;
+
+        Vector3 vWork = Vector3.Scale(vBase, new Vector3(0.0f, 0.0f, 1.0f));
+        vWork = Vector3.Normalize(vWork);
+        vWork *= -speed;
+        moveVector = rot * vWork;
+        if( moveVector.z > 0.0f ) moveVector.z = -moveVector.z;
 
         vOut = moveVector;
         return true;
@@ -173,10 +298,12 @@ public class ItemRocket : ItemBase {
     //-----------------------------------------------------------------
     void OnGUI()
     {
-        GUI.TextField(new Rect(720.0f, 400.0f, 300, 80), "ReloadTime: " + m_reloadTime + "\n" +
+        GUI.TextField(new Rect(720.0f, 300.0f, 300, 180), "ReloadTime: " + m_reloadTime + "\n" +
                                                    "SpeedVec: " + objScript.RigidBody.velocity.ToString() + "\n" +
                                                    "Speed : " + objScript.RigidBody.velocity.magnitude + "\n" +  
-                                                   "State: " + m_state );
+                                                   "State: " + m_state + "\n" +  
+                                                   "RocketPower:" + m_rocketPower + "\n" +
+                                                   "Rot:" + scrCamera.hmdOrientation.ToString() );
                                                     
     }
 }

@@ -65,6 +65,9 @@ public class CharAction : MonoBehaviour {
     private float yaw;
     public float Yaw { get { return yaw; } }
 
+    // ロケット角度
+    private float rocketRot;
+
     //---------------------------------------------------------------
     private float elapsedTime;
     private Vector3 startPos;
@@ -107,6 +110,8 @@ public class CharAction : MonoBehaviour {
 
         elapsedTime = 0;
 
+        rocketRot = 180.0f;
+
         SetMoveMode(ACTION_MODE.ACT_MODE_BLOWOFF);
 	}
 	
@@ -115,7 +120,9 @@ public class CharAction : MonoBehaviour {
     //---------------------------------------------------------------
 	void Update ()
     {
-        
+        // ロケット回転
+        RotateRocket();
+
         ChangeMoveMode();
 
         // リセット処理
@@ -475,5 +482,20 @@ public class CharAction : MonoBehaviour {
 
         transform.position = pos;
 
+    }
+
+    void RotateRocket()
+    {
+        float lh = Input.GetAxis("Horizontal");
+
+        if(lh > 0.25f || lh < -0.25f)
+        {
+
+            rocketRot += (lh * 1.0f) * GameDefine.FPSDeltaScale();
+
+            Quaternion rot = Quaternion.AngleAxis(rocketRot, transform.up);
+
+            transform.FindChild("chairs").FindChild("chairs:root").FindChild("chairs:barrel").rotation = rot;
+        }       
     }
 }

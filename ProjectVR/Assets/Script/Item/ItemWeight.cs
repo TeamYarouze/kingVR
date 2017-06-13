@@ -7,9 +7,9 @@ public class ItemWeight : ItemBase {
     [SerializeField]
     private float WeightInitialAngle = -60.0f;
     [SerializeField]
-    private float WeightPower = -10.0f;
+    private float WeightPower = -1.0f;
     [SerializeField]
-    private float WeightGravity = 10.0f;
+    private float WeightGravity = 1.0f;
 
     private bool bButtonOn = false;
 
