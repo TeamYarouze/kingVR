@@ -5,15 +5,27 @@ using UnityEngine;
 public class ParticleSystemBase : MonoBehaviour {
 
     private ParticleSystem psc = null;
+    private bool bPlay;
 
 	// Use this for initialization
 	void Start () {
         psc = GetComponent<ParticleSystem>();
+        bPlay = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+	
+        if( !psc ) return;
+
+        if( bPlay )
+        {
+            if( psc.isStopped )
+            {
+                Destroy(gameObject);
+            }
+        }
+        	
 	}
 
     public void Play()
@@ -21,6 +33,7 @@ public class ParticleSystemBase : MonoBehaviour {
         if( !psc ) return;
 
         psc.Play();
+        bPlay = true;
     }
 
     public void Stop()
@@ -28,6 +41,7 @@ public class ParticleSystemBase : MonoBehaviour {
         if( !psc ) return;
 
         psc.Stop();
+        bPlay = false;
     }
 
     public bool IsPlay()
@@ -37,5 +51,10 @@ public class ParticleSystemBase : MonoBehaviour {
         return psc.isPlaying;
     }
 
+    public bool IsLoop()
+    {
+        if( !psc ) return false;
 
+        return psc.main.loop;
+    }
 }

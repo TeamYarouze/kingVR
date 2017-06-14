@@ -10,7 +10,7 @@ GameObject:
   - component: {fileID: 400000}
   - component: {fileID: 19900002}
   - component: {fileID: 19800002}
-  - component: {fileID: 11400002}
+  - component: {fileID: 114172525827303742}
   m_Layer: 0
   m_Name: Glow
   m_TagString: Untagged
@@ -30,6 +30,7 @@ GameObject:
   - component: {fileID: 19800000}
   - component: {fileID: 13500000}
   - component: {fileID: 11400000}
+  - component: {fileID: 114470762977704998}
   m_Layer: 0
   m_Name: Afterburner
   m_TagString: Untagged
@@ -79,18 +80,6 @@ MonoBehaviour:
   effectWidth: 2
   effectDistance: 32
   force: 140
---- !u!114 &11400002
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100000}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b878b2bd27dca747855179c7ca76010, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minColour: {r: 1, g: 1, b: 1, a: 1}
 --- !u!135 &13500000
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -2954,15 +2943,9 @@ ParticleSystem:
           inSlope: 0
           outSlope: 0
           tangentMode: 0
-        - serializedVersion: 2
-          time: 1
-          value: 1
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
-        m_RotationOrder: 4
+        m_RotationOrder: 0
       minCurve:
         serializedVersion: 2
         m_Curve:
@@ -2972,16 +2955,10 @@ ParticleSystem:
           inSlope: 0
           outSlope: 0
           tangentMode: 0
-        - serializedVersion: 2
-          time: 1
-          value: 0
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
-        m_RotationOrder: 4
-      minMaxState: 0
+        m_RotationOrder: 0
+      minMaxState: 3
     startSizeZ:
       scalar: 1
       maxCurve:
@@ -2993,15 +2970,9 @@ ParticleSystem:
           inSlope: 0
           outSlope: 0
           tangentMode: 0
-        - serializedVersion: 2
-          time: 1
-          value: 1
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
-        m_RotationOrder: 4
+        m_RotationOrder: 0
       minCurve:
         serializedVersion: 2
         m_Curve:
@@ -3011,16 +2982,10 @@ ParticleSystem:
           inSlope: 0
           outSlope: 0
           tangentMode: 0
-        - serializedVersion: 2
-          time: 1
-          value: 0
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
-        m_RotationOrder: 4
-      minMaxState: 0
+        m_RotationOrder: 0
+      minMaxState: 3
     startRotationX:
       scalar: 0
       maxCurve:
@@ -5410,3 +5375,26 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 100004}
   m_IsPrefabParent: 1
+--- !u!114 &114172525827303742
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe10e1b61e75bbf4084b6858ca05c8b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minColour: {r: 0, g: 0, b: 0, a: 0}
+--- !u!114 &114470762977704998
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b28b07e7616fc544be1e79a30772e2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
