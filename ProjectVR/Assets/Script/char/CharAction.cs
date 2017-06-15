@@ -68,6 +68,10 @@ public class CharAction : MonoBehaviour {
     // ロケット角度
     private float rocketRot;
 
+    private GameObject AfterBurner = null;
+
+    private GameObject SceneUpdater = null;
+
     //---------------------------------------------------------------
     private float elapsedTime;
     private Vector3 startPos;
@@ -111,6 +115,8 @@ public class CharAction : MonoBehaviour {
         elapsedTime = 0;
 
         rocketRot = 180.0f;
+        
+        SceneUpdater = GameObject.Find("SceneUpdater");
 
         SetMoveMode(ACTION_MODE.ACT_MODE_BLOWOFF);
 	}
@@ -267,6 +273,17 @@ public class CharAction : MonoBehaviour {
             rb.isKinematic = true;
             rb.velocity = m_vectorToMove;
             rb.angularVelocity = m_vectorToMove;
+
+
+            PlayAfterBurner(false);
+
+            if( SceneUpdater && SceneUpdater.GetComponent<UpdateStage001>() )
+            {
+                if( !SceneUpdater.GetComponent<UpdateStage001>().IsPlayDustStorm() )
+                {
+                    SceneUpdater.GetComponent<UpdateStage001>().PlayDustStorm(false);
+                }
+            }
         }
     }
 
@@ -301,8 +318,6 @@ public class CharAction : MonoBehaviour {
     {
         m_vectorToMove = velocity;
 
-        bBlowOff = true;
-
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
 
@@ -313,7 +328,20 @@ public class CharAction : MonoBehaviour {
         distant = transform.position - startPos;
 
         // パーティクルテスト
-        
+        if( !IsAfterBurner() )
+        {
+            PlayAfterBurner(true);
+        }
+
+        if( SceneUpdater && SceneUpdater.GetComponent<UpdateStage001>() )
+        {
+            if( !SceneUpdater.GetComponent<UpdateStage001>().IsPlayDustStorm() )
+            {
+                SceneUpdater.GetComponent<UpdateStage001>().PlayDustStorm(true);
+            }
+        }
+    
+        bBlowOff = true;
     }
 
     //---------------------------------------------------------------
@@ -465,6 +493,19 @@ public class CharAction : MonoBehaviour {
                 m_arrayEquipItem[id].GetComponent<ItemBase>().ResetItem();
             }
 
+            if( IsAfterBurner() )
+            {
+                PlayAfterBurner(false);
+            }
+
+            if( SceneUpdater && SceneUpdater.GetComponent<UpdateStage001>() )
+            {
+                if( !SceneUpdater.GetComponent<UpdateStage001>().IsPlayDustStorm() )
+                {
+                    SceneUpdater.GetComponent<UpdateStage001>().PlayDustStorm(false);
+                }
+            }
+
         }
     }
 
@@ -497,5 +538,32 @@ public class CharAction : MonoBehaviour {
 
             transform.FindChild("chairs").FindChild("chairs:root").FindChild("chairs:barrel").rotation = rot;
         }       
+    }
+
+    void PlayAfterBurner(bool bFire)
+    {
+        if( !AfterBurner )
+        {
+            AfterBurner = transform.FindChild("chairs/chairs:root/chairs:barrel/Afterburner").gameObject;
+        }
+
+        if( bFire )
+        {
+            AfterBurner.GetComponent<ParticleSystemBase>().Play();
+        }
+        else
+        {
+            AfterBurner.GetComponent<ParticleSystemBase>().Stop();
+        }
+    }
+
+    bool IsAfterBurner()
+    {
+        if( !AfterBurner )
+        {
+            return false;
+        }
+
+        return AfterBurner.GetComponent<ParticleSystemBase>().IsPlay();
     }
 }

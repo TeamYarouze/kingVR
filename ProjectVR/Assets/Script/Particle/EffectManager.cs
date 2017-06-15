@@ -2,34 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EffectManager : Singleton<EffectManager> {
+public class EffectManager : MonoBehaviour {
 
     private int EFFECT_OBJ_MAX = 64;
     private int NOT_LOOP_EFFECT_IDX = 65;
 
     private GameObject[] m_effectArray;
-    private int effectArrayIdx;
 
     public void Awake()
     {
-        Debug.Log("--------------- EffectManager Instance - ");
-
-        base.Awake();
 
         m_effectArray = new GameObject[EFFECT_OBJ_MAX];
         for(int idx = 0; idx < EFFECT_OBJ_MAX; idx++)
         {
             m_effectArray[idx] = null;
         }
-
-        effectArrayIdx = 0;
-
-        DontDestroyOnLoad(this.gameObject);
-
     }
 
 	void Start () {
-        Debug.Log("------------- EffectManager Start \n");
 
         
 	}

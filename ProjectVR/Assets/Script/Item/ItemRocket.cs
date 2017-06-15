@@ -47,6 +47,8 @@ public class ItemRocket : ItemBase {
     private scr_VRCameraRoot scrCamera;
 
     private Vector3 rotateAxis;
+
+    private EffectManager effectMngr = null;
  
 	// Use this for initialization
 	new public void Start () {
@@ -63,6 +65,8 @@ public class ItemRocket : ItemBase {
         scrCamera = GameObject.FindWithTag("CameraRoot").GetComponent<scr_VRCameraRoot>();
         rotateAxis = Vector3.zero;
         m_rocketPower = 0.0f;
+
+        effectMngr = GameObject.Find("EffectManager").GetComponent<EffectManager>();
 	}
 	
 	// Update is called once per frame
@@ -213,12 +217,12 @@ public class ItemRocket : ItemBase {
             }
 
             Vector3 outVelocity;
-//            bool bLaunch = SetupRocketOrbit(out outVelocity, vForward, camRot, power);
             bool bLaunch = SetupRocketOrbit(out outVelocity, vForward, angle, power);
 
             if( bLaunch )
             {
                 objScript.SetupBlowoffParam(outVelocity, ForceMode.VelocityChange);
+                PlayExplosion();
             }
 
             m_rocketPower = 0.0f;
@@ -293,6 +297,14 @@ public class ItemRocket : ItemBase {
         vOut = moveVector;
         return true;
     }
+
+    // 爆発エフェクト発生
+    void PlayExplosion()
+    {
+        if( !effectMngr ) return;
+
+        effectMngr.PlayEffect("ShockFlame", transform.position);
+    } 
 
 
     //-----------------------------------------------------------------

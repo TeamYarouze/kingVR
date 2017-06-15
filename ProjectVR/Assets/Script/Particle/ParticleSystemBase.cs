@@ -7,10 +7,14 @@ public class ParticleSystemBase : MonoBehaviour {
     private ParticleSystem psc = null;
     private bool bPlay;
 
-	// Use this for initialization
-	void Start () {
+    void Awake()
+    {
         psc = GetComponent<ParticleSystem>();
         bPlay = false;
+    }
+
+	// Use this for initialization
+	void Start () {
 	}
 	
 	// Update is called once per frame

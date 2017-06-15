@@ -27,7 +27,7 @@ public class UpdateStage001 : UpdateBase
 	void Start () {
 
         DustStorm = GameObject.Find("DustStorm");
-        particlBase.Play();
+//        particlBase.Play();
 	}
 	
 	// Update is called once per frame
@@ -45,5 +45,22 @@ public class UpdateStage001 : UpdateBase
             GameSceneManager.Instance.ChangeScene(GameModeData.GAMEMODE.GAME_MODE_BOOT);
         }
 	}
+
+    public void PlayDustStorm(bool bPlay)
+    {
+        if( bPlay )
+        {
+            particlBase.Play();
+        }
+        else
+        {
+            particlBase.Stop();
+        }
+    }
+
+    public bool IsPlayDustStorm()
+    {
+        return particlBase.IsPlay();
+    }
 
 }
