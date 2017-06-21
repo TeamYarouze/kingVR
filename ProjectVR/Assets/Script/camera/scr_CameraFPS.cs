@@ -22,7 +22,6 @@ public class scr_CameraFPS : MonoBehaviour {
 
     private GameObject m_targetObj = null;
 
-
 	// Use this for initialization
 	void Start ()
     {

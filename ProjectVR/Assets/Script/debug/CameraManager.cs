@@ -8,6 +8,23 @@ public class CameraManager
     private Camera freeLookCamera = null;
     private Camera fpsCamera = null;
 
+    private GameObject socialCameraObj;
+    private GameObject fpsCameraObj;
+    private GameObject freeLookCameraObj;
+
+    public GameObject FpsCameraObj
+    {
+        get { return fpsCameraObj; }
+    }
+    public GameObject SocialCameraObj
+    {
+        get { return socialCameraObj; }
+    }
+    public GameObject FreeLookCameraObj
+    {
+        get { return freeLookCameraObj; }
+    }
+
     public enum UseCameraType
     {
         USE_CAMERA_SOCIAL = 0,
@@ -29,7 +46,8 @@ public class CameraManager
 
     public void Initialize()
     {
-        if( GameObject.Find("SocialScreenCamera") )
+        socialCameraObj = GameObject.Find("SocialScreenCamera");
+        if( socialCameraObj )
         {
 		    socialCamera = GameObject.Find("SocialScreenCamera").GetComponent<Camera>();
             if( !socialCamera )
@@ -38,7 +56,8 @@ public class CameraManager
             }
         }
 
-        if( GameObject.Find("FreeCamera") )
+        freeLookCameraObj = GameObject.Find("FreeCamera");
+        if( freeLookCameraObj )
         {
             freeLookCamera = GameObject.Find("FreeCamera").GetComponent<Camera>(); 
             if( !freeLookCamera )
@@ -47,7 +66,8 @@ public class CameraManager
             }
         }
 
-        if( GameObject.Find("FPSCamera") )
+        fpsCameraObj = GameObject.Find("FPSCamera");
+        if( fpsCameraObj )
         {
             fpsCamera = GameObject.Find("FPSCamera").GetComponent<Camera>();
             if( !fpsCamera )

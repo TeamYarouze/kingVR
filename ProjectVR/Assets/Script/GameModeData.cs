@@ -13,7 +13,6 @@ public static class GameModeData {
         GAME_MODE_TITLE,            // タイトル
         GAME_MODE_STORY,            // ストーリーモード
         GAME_MODE_STAGE,            // ゲーム
-        GAME_MODE_STAGE001,
         GAME_MODE_NUM,
     };
      
@@ -31,12 +30,11 @@ public static class GameModeData {
         get { return prevGameMode; }
     }
 
-    
-
     static GameModeData()
     {
         gameMode = GAMEMODE.GAME_MODE_BOOT;
         prevGameMode = gameMode;
+        stageCount = 0;
     }
 
     public static void ChangeGameMode(GAMEMODE mode)
@@ -44,4 +42,15 @@ public static class GameModeData {
         prevGameMode = gameMode;
         gameMode = mode;
     }
+
+    //-----------------------------------------------------------------
+    // ステージ数
+    //-----------------------------------------------------------------
+    private static int stageCount;
+    public static int StageCount
+    {
+        set { stageCount = value; }
+        get { return stageCount; }
+    }
+
 }

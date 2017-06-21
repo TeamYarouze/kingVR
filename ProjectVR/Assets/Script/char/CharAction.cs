@@ -26,8 +26,7 @@ public class CharAction : MonoBehaviour {
     private Animator anim = null;							// キャラにアタッチされるアニメーターへの参照
 //	private AnimatorStateInfo currentBaseState;			// base layerで使われる、アニメーターの現在の状態の参照
 
-//    private UpdateStage000 updater = null;
-    private UpdateBase updater = null;
+    private UpdateStage updater = null;
     private Camera m_camera = null;
     private GameObject m_VRCameraRoot;
 
@@ -84,7 +83,11 @@ public class CharAction : MonoBehaviour {
     */
     //---------------------------------------------------------------
 	void Start () {
-        updater = UpdateBase.Instance;
+
+        updater = GameSceneManager.Instance.GetSceneUpdater() as UpdateStage;
+
+
+
 
         // RigidBodyの取得
         rb = GetComponent<Rigidbody>();
@@ -92,7 +95,12 @@ public class CharAction : MonoBehaviour {
         rb.useGravity = true;
         rb.isKinematic = false;
 
-        m_camera = updater.CameraMngr.GetCurrentCameraComponent();
+        m_camera = null;
+  
+        if( updater )
+        {             
+            m_camera = updater.CameraMngr.GetCurrentCameraComponent();
+        }
 
         m_VRCameraRoot = GameObject.Find("VRCameraRoot");
         yaw = 0.0f;
@@ -116,8 +124,6 @@ public class CharAction : MonoBehaviour {
 
         rocketRot = 180.0f;
         
-        SceneUpdater = GameObject.Find("SceneUpdater");
-
         SetMoveMode(ACTION_MODE.ACT_MODE_BLOWOFF);
 	}
 	
@@ -277,13 +283,14 @@ public class CharAction : MonoBehaviour {
 
             PlayAfterBurner(false);
 
-            if( SceneUpdater && SceneUpdater.GetComponent<UpdateStage001>() )
+            if( updater )
             {
-                if( !SceneUpdater.GetComponent<UpdateStage001>().IsPlayDustStorm() )
+                if( updater.IsPlayDustStorm() )
                 {
-                    SceneUpdater.GetComponent<UpdateStage001>().PlayDustStorm(false);
+                    updater.PlayDustStorm(false);
                 }
             }
+
         }
     }
 
@@ -333,11 +340,11 @@ public class CharAction : MonoBehaviour {
             PlayAfterBurner(true);
         }
 
-        if( SceneUpdater && SceneUpdater.GetComponent<UpdateStage001>() )
+        if( updater )
         {
-            if( !SceneUpdater.GetComponent<UpdateStage001>().IsPlayDustStorm() )
+            if( !updater.IsPlayDustStorm() )
             {
-                SceneUpdater.GetComponent<UpdateStage001>().PlayDustStorm(true);
+                updater.PlayDustStorm(true);
             }
         }
     
@@ -498,11 +505,11 @@ public class CharAction : MonoBehaviour {
                 PlayAfterBurner(false);
             }
 
-            if( SceneUpdater && SceneUpdater.GetComponent<UpdateStage001>() )
+            if( updater )
             {
-                if( !SceneUpdater.GetComponent<UpdateStage001>().IsPlayDustStorm() )
+                if( updater.IsPlayDustStorm() )
                 {
-                    SceneUpdater.GetComponent<UpdateStage001>().PlayDustStorm(false);
+                    updater.PlayDustStorm(false);
                 }
             }
 

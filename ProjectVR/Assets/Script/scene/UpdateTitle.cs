@@ -3,17 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VR;
 
-public class UpdateTitle : Singleton<UpdateTitle> {
+public class UpdateTitle : UpdateBase {
 
-    // ※消さないでください
     void Awake()
     {
         base.Awake();
-    }
-
-    // ※消さないでください
-    void OnEnable()
-    {
     }
 
 	/**

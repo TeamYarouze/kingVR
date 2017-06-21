@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VR;
 
-public class UpdateBootSequence : MonoBehaviour {
+public class UpdateBootSequence : UpdateBase {
 
     private int counter;
 

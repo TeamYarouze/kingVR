@@ -9,6 +9,14 @@ using UnityEngine.PS4;
 
 public class GameSceneManager : Singleton<GameSceneManager> {
 
+    private Scene currentScene;
+    public Scene CurrentScene
+    {
+        get { return currentScene; }
+    }
+
+    private GameObject sceneUpdater;
+
     public void Awake()
     {
         Debug.Log("--------------- GameSceneManager Instance - ");
@@ -18,6 +26,9 @@ public class GameSceneManager : Singleton<GameSceneManager> {
 
         // FPS固定
         Application.targetFrameRate = GameDefine.BaseFPS;
+
+        // ブートシーンの取得
+        currentScene = SceneManager.GetActiveScene();
     }
 
 	void Start () {
@@ -26,12 +37,14 @@ public class GameSceneManager : Singleton<GameSceneManager> {
         {
             VRManager.Instance.BeginVRSetup();
         }
+
+        sceneUpdater = GameObject.Find("SceneUpdater");
 	}
 	
 	void Update ()
     {
+        currentScene = SceneManager.GetActiveScene();
 	}
-
 
     //---------------------------------------------------------------
     /*
@@ -63,6 +76,8 @@ public class GameSceneManager : Singleton<GameSceneManager> {
         {
             yield return null;
         }
+
+        GameModeData.ChangeGameMode(next);
         
         // フェードイン
         GameFadeManager.Instance.StartFade(GameFadeManager.FadeType.FADE_IN, 30);
@@ -72,5 +87,33 @@ public class GameSceneManager : Singleton<GameSceneManager> {
         }
 
     }
+
+    //=========================================================================
+
+    public UpdateBase GetSceneUpdater()
+    {
+        if (!sceneUpdater )
+        {
+            return null;
+        }
+
+        if( currentScene.name == "bootSequence" )
+        {
+            return sceneUpdater.GetComponent<UpdateBootSequence>();
+        }
+        else if( currentScene.name == "Title" )
+        {
+            return sceneUpdater.GetComponent<UpdateTitle>();
+        }
+        else
+        {
+            return sceneUpdater.GetComponent<UpdateStage>();
+        }
+
+        return null;
+    }
+
+
+
 }
  
