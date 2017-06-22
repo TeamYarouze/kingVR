@@ -15,6 +15,12 @@ public class GameSceneManager : Singleton<GameSceneManager> {
         get { return currentScene; }
     }
 
+    // フェード中かどうかをチェックする
+    public bool IsFade
+    {
+        get { return GameFadeManager.Instance.IsFade(); }
+    }
+
     private GameObject sceneUpdater;
 
     public void Awake()
@@ -113,7 +119,27 @@ public class GameSceneManager : Singleton<GameSceneManager> {
         return null;
     }
 
+    //---------------------------------------------------------------
+    /*
+        @brief      フェードアウト開始
+    */
+    //---------------------------------------------------------------
+    public void StartFadeOut(int fadeTime)
+    {
+        GameFadeManager.Instance.StartFade(GameFadeManager.FadeType.FADE_OUT, fadeTime);
+    }
 
+    //---------------------------------------------------------------
+    /*
+        @brief      フェードイン開始
+    */
+    //---------------------------------------------------------------
+    public void StartFadeIn(int fadeTime)
+    {
+        GameFadeManager.Instance.StartFade(GameFadeManager.FadeType.FADE_IN, fadeTime);
+    }
+
+    
 
 }
  

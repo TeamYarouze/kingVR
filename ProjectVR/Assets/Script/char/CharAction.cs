@@ -71,6 +71,20 @@ public class CharAction : MonoBehaviour {
 
     private GameObject SceneUpdater = null;
 
+    // ゴール判定
+    private bool m_bGoal;
+    public bool IsGoal
+    {
+        get { return m_bGoal; }
+    }
+
+    // ゲームオーバー判定
+    private bool m_bGameOver;
+    public bool IsGameOver
+    {
+        get { return m_bGameOver; }
+    }
+
     //---------------------------------------------------------------
     private float elapsedTime;
     private Vector3 startPos;
@@ -85,9 +99,6 @@ public class CharAction : MonoBehaviour {
 	void Start () {
 
         updater = GameSceneManager.Instance.GetSceneUpdater() as UpdateStage;
-
-
-
 
         // RigidBodyの取得
         rb = GetComponent<Rigidbody>();
@@ -123,6 +134,9 @@ public class CharAction : MonoBehaviour {
         elapsedTime = 0;
 
         rocketRot = 180.0f;
+
+        m_bGoal = false;
+        m_bGameOver = false;
         
         SetMoveMode(ACTION_MODE.ACT_MODE_BLOWOFF);
 	}
@@ -275,6 +289,11 @@ public class CharAction : MonoBehaviour {
         if( collision.gameObject.name == "Goal" )
         {
             Debug.Log("Goooooaaaaallllll !!!!!!!!!!");
+
+            m_bGoal = true;
+
+
+
             rb.useGravity = false;
             rb.isKinematic = true;
             rb.velocity = m_vectorToMove;
@@ -360,6 +379,32 @@ public class CharAction : MonoBehaviour {
     {
         rb.AddForce(0.0f, -m_gravity, 0.0f, ForceMode.Acceleration);
     }
+
+    //---------------------------------------------------------------
+    /*
+        @brief      最初の吹っ飛ばし
+    */
+    //---------------------------------------------------------------
+    public void FirstBlowoff()
+    {
+        GameObject tmpRocket = null;
+
+        for(int i = 0; i < m_arrayEquipItem.Length; i++)
+        {
+            if( m_arrayEquipItem[i].GetComponent<ItemBase>().Type == GameDefine.ITEM_TYPE.ITEM_TYPE_ROCKET )
+            {
+                tmpRocket = m_arrayEquipItem[i];
+                break;
+            }
+        }
+        
+        if( tmpRocket != null )
+        {
+            tmpRocket.GetComponent<ItemRocket>().FirstFire();
+        }
+
+    }
+
 
     //---------------------------------------------------------------
     /*
@@ -479,9 +524,9 @@ public class CharAction : MonoBehaviour {
         @brief      リセット処理
     */
     //---------------------------------------------------------------
-    void ResetPosition()
+    public void ResetPosition(bool bAuto = false)
     {
-        if( Input.GetButtonDown("L3") )
+        if( bAuto || Input.GetButtonDown("L3") )
         {
             m_vectorToMove = Vector3.zero;
             rb.AddForce(m_vectorToMove, ForceMode.VelocityChange);
@@ -512,6 +557,9 @@ public class CharAction : MonoBehaviour {
                     updater.PlayDustStorm(false);
                 }
             }
+
+            m_bGoal = false;
+            m_bGameOver = false;
 
         }
     }

@@ -20,4 +20,9 @@ public class GoalUI : MonoBehaviour {
     {
         animator.SetTrigger("IsGoalTrigger");
     }
+
+    public void StopGoalUI()
+    {
+        animator.SetTrigger("GoIdle");
+    }
 }

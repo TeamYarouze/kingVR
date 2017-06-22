@@ -213,7 +213,7 @@ public class ItemRocket : ItemBase {
             {
                 vForward = objScript.RigidBody.velocity;
                 power = AddMaxPower;
-                angle = AddMaxAngle;
+                angle = AddMaxAngle * m_rocketPower;
             }
 
             Vector3 outVelocity;
@@ -304,7 +304,33 @@ public class ItemRocket : ItemBase {
         if( !effectMngr ) return;
 
         effectMngr.PlayEffect("ShockFlame", transform.position);
-    } 
+    }
+
+    //---------------------------------------------------------------
+    /*
+        @brief      最初のロケット噴射
+    */
+    //---------------------------------------------------------------
+    public void FirstFire()
+    {
+        Vector3 vForward = attachedObject.transform.forward;
+        float power = InitialRocketPower;
+        float angle = InitialRocketAngle;
+
+        Vector3 outVelocity;
+        bool bLaunch = SetupRocketOrbit(out outVelocity, vForward, angle, power);
+
+        if( bLaunch )
+        {
+            objScript.SetupBlowoffParam(outVelocity, ForceMode.VelocityChange);
+            PlayExplosion();
+        }
+
+        m_rocketPower = 0.0f;
+        m_state = EItemUseState.ITEM_STAT_USING;
+
+        base.OnFire();
+    }
 
 
     //-----------------------------------------------------------------

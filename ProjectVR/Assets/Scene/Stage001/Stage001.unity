@@ -739,6 +739,10 @@ Prefab:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 1317688198368790, guid: d8097ea0caaf0ce408dc755b55966986, type: 2}
+      propertyPath: m_Name
+      value: UIRoot
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d8097ea0caaf0ce408dc755b55966986, type: 2}
   m_IsPrefabParent: 0
