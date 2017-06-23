@@ -139,6 +139,7 @@ public class UpdateStage : UpdateBase {
         switch( m_state )
         {
         case StageState.STATE_PREPARE:
+
             
             uiManager.ScrCountDown.StartCountDown();
             ChangeState( StageState.STATE_READY );

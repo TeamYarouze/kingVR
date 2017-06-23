@@ -13,9 +13,13 @@ public class ItemWeight : ItemBase {
 
     private bool bButtonOn = false;
 
+    private AudioSource audioSource;
+
 	// Use this for initialization
 	void Start () {
 		base.Start();
+
+        audioSource = GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
@@ -152,6 +156,7 @@ public class ItemWeight : ItemBase {
                 vForward = objScript.RigidBody.velocity;
 
                 StartWeight(out outVelocity, vForward, m_Angle);
+                PlaySE();
 
                 m_state = EItemUseState.ITEM_STAT_USING;
             }
@@ -173,6 +178,10 @@ public class ItemWeight : ItemBase {
         }
     }
 
+    private void PlaySE()
+    {
+        audioSource.Play();
+    }
 
 
     void OnGUI()

@@ -50,6 +50,14 @@ public class ItemRocket : ItemBase {
 
     private EffectManager effectMngr = null;
  
+    private AudioSource[] audioSource;
+
+    public enum RocketSE
+    {
+        SE_EXPLOSION,
+        SE_AFTER_BURNER,
+    };
+
 	// Use this for initialization
 	new public void Start () {
         base.Start();
@@ -67,6 +75,8 @@ public class ItemRocket : ItemBase {
         m_rocketPower = 0.0f;
 
         effectMngr = GameObject.Find("EffectManager").GetComponent<EffectManager>();
+
+        audioSource = GetComponents<AudioSource>();
 	}
 	
 	// Update is called once per frame
@@ -222,7 +232,7 @@ public class ItemRocket : ItemBase {
             if( bLaunch )
             {
                 objScript.SetupBlowoffParam(outVelocity, ForceMode.VelocityChange);
-                PlayExplosion();
+                GenerateExplosion();
             }
 
             m_rocketPower = 0.0f;
@@ -299,11 +309,12 @@ public class ItemRocket : ItemBase {
     }
 
     // 爆発エフェクト発生
-    void PlayExplosion()
+    void GenerateExplosion()
     {
         if( !effectMngr ) return;
 
         effectMngr.PlayEffect("ShockFlame", transform.position);
+        PlayExplosion();
     }
 
     //---------------------------------------------------------------
@@ -323,13 +334,47 @@ public class ItemRocket : ItemBase {
         if( bLaunch )
         {
             objScript.SetupBlowoffParam(outVelocity, ForceMode.VelocityChange);
-            PlayExplosion();
+            GenerateExplosion();
         }
 
         m_rocketPower = 0.0f;
         m_state = EItemUseState.ITEM_STAT_USING;
 
         base.OnFire();
+    }
+
+
+    //---------------------------------------------------------------
+    /*
+        @brief      SE関係
+    */
+    //---------------------------------------------------------------
+    public void Play(RocketSE type)
+    {
+        int typeID = (int)type;
+        int len = audioSource.Length;
+        if( typeID >= len )
+        {
+            return;
+        }
+        
+        audioSource[typeID].Play();
+    }
+
+    /**
+     *      爆発SE
+     */
+    public void PlayExplosion()
+    {
+        Play(RocketSE.SE_EXPLOSION);
+    }
+
+    /**
+     *      アフターバーナーSE -> いらねぇ
+     */
+    public void PlayAfterBurner()
+    {
+        Play(RocketSE.SE_AFTER_BURNER);
     }
 
 

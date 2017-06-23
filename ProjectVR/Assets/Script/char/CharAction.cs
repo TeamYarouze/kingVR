@@ -67,7 +67,9 @@ public class CharAction : MonoBehaviour {
     // ロケット角度
     private float rocketRot;
 
+    // アフターバーナー
     private GameObject AfterBurner = null;
+    private AudioSource audioSource;
 
     private GameObject SceneUpdater = null;
 
@@ -124,6 +126,8 @@ public class CharAction : MonoBehaviour {
         m_StartRot = transform.rotation;
 
         bBlowOff = false;
+
+        audioSource = GetComponent<AudioSource>();
 
         GameObject rocket = (GameObject)Instantiate(Resources.Load(GameResourcePath.GetRocketPath()), transform.position, transform.rotation);
         EquipItem(rocket);
@@ -285,6 +289,20 @@ public class CharAction : MonoBehaviour {
         rb.AddForce(m_vectorToMove, ForceMode.VelocityChange);
         */
 
+        GameObject itemObj = null;
+
+        itemObj = GetItem(GameDefine.ITEM_TYPE.ITEM_TYPE_ROCKET);
+        
+        if( itemObj != null )
+        {
+            itemObj.GetComponent<ItemRocket>().ResetItem();
+        }
+
+
+
+        audioSource.Stop();
+        PlayAfterBurner(false);
+
         // ゴール処理
         if( collision.gameObject.name == "Goal" )
         {
@@ -300,8 +318,7 @@ public class CharAction : MonoBehaviour {
             rb.angularVelocity = m_vectorToMove;
 
 
-            PlayAfterBurner(false);
-
+           
             if( updater )
             {
                 if( updater.IsPlayDustStorm() )
@@ -389,20 +406,31 @@ public class CharAction : MonoBehaviour {
     {
         GameObject tmpRocket = null;
 
-        for(int i = 0; i < m_arrayEquipItem.Length; i++)
-        {
-            if( m_arrayEquipItem[i].GetComponent<ItemBase>().Type == GameDefine.ITEM_TYPE.ITEM_TYPE_ROCKET )
-            {
-                tmpRocket = m_arrayEquipItem[i];
-                break;
-            }
-        }
+        tmpRocket = GetItem(GameDefine.ITEM_TYPE.ITEM_TYPE_ROCKET);
         
         if( tmpRocket != null )
         {
             tmpRocket.GetComponent<ItemRocket>().FirstFire();
         }
 
+    }
+
+    //---------------------------------------------------------------
+    /*
+        @brief      アイテムの取得
+    */
+    //---------------------------------------------------------------
+    public GameObject GetItem(GameDefine.ITEM_TYPE type)
+    {
+        for(int i = 0; i < m_arrayEquipItem.Length; i++)
+        {
+            if( m_arrayEquipItem[i].GetComponent<ItemBase>().Type == type )
+            {
+                return m_arrayEquipItem[i];
+            }
+        }
+
+        return null;
     }
 
 
@@ -605,10 +633,12 @@ public class CharAction : MonoBehaviour {
         if( bFire )
         {
             AfterBurner.GetComponent<ParticleSystemBase>().Play();
+            audioSource.Play();
         }
         else
         {
             AfterBurner.GetComponent<ParticleSystemBase>().Stop();
+            audioSource.Stop();
         }
     }
 

@@ -36,6 +36,8 @@ public class scr_VRCameraRoot : MonoBehaviour {
 
     private Vector3 offsetPos;
 
+    private GameObject EyeSight;
+
 	// Use this for initialization
 	void Start () {
         if( !king )
@@ -47,7 +49,6 @@ public class scr_VRCameraRoot : MonoBehaviour {
             // 初期位置を固定したい
             MoveExe();
         }
-
 	}
 	
 	// Update is called once per frame

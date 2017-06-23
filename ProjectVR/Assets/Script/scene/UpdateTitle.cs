@@ -5,6 +5,8 @@ using UnityEngine.VR;
 
 public class UpdateTitle : UpdateBase {
 
+    private bool bNext;
+
     void Awake()
     {
         base.Awake();
@@ -16,6 +18,8 @@ public class UpdateTitle : UpdateBase {
 	void Start () {
 		// 初期化処理をここに書きます
         // 初期化処理なので実行されるのはシーン開始時の1回だけです
+
+        bNext = false;
 	}
 	
 	/**
@@ -23,5 +27,16 @@ public class UpdateTitle : UpdateBase {
      */
 	void Update () {
 		// 毎フレームの更新処理をここに書きます
+
+        if( !bNext )
+        {
+
+            if( Input.GetButtonDown("Circle") || Input.GetButtonDown("Cross")
+                || Input.GetButtonDown("Square") || Input.GetButtonDown("Triangle") )
+            {
+                GameSceneManager.Instance.ChangeScene(GameModeData.GAMEMODE.GAME_MODE_STAGE);
+                bNext = true;
+            }
+        }
 	}
 }
