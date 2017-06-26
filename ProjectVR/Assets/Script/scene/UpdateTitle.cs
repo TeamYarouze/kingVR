@@ -7,7 +7,7 @@ public class UpdateTitle : UpdateBase {
 
     private bool bNext;
 
-    void Awake()
+    new void Awake()
     {
         base.Awake();
     }
@@ -15,9 +15,14 @@ public class UpdateTitle : UpdateBase {
 	/**
      *  初期化処理です
      */
-	void Start () {
+	new void Start () {
 		// 初期化処理をここに書きます
         // 初期化処理なので実行されるのはシーン開始時の1回だけです
+
+        if( !VRSettings.enabled )
+        {
+            VRManager.Instance.ChangeVRMode();
+        }
 
         bNext = false;
 	}
@@ -25,7 +30,7 @@ public class UpdateTitle : UpdateBase {
 	/**
      * 毎フレームの更新処理です
      */
-	void Update () {
+	new void Update () {
 		// 毎フレームの更新処理をここに書きます
 
         if( !bNext )

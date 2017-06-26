@@ -16,14 +16,14 @@ public class ItemWeight : ItemBase {
     private AudioSource audioSource;
 
 	// Use this for initialization
-	void Start () {
+	new void Start () {
 		base.Start();
 
         audioSource = GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	new void Update () {
 
         if( !IsAttachedObject() )
         {

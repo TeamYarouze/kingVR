@@ -37,7 +37,7 @@ public class GameFadeManager : Singleton<GameFadeManager> {
         }
     }
 
-    void Awake()
+    new void Awake()
     {
         base.Awake();
         DontDestroyOnLoad(this.gameObject);
@@ -65,10 +65,12 @@ public class GameFadeManager : Singleton<GameFadeManager> {
 	// Update is called once per frame
 	void Update () {
 
+        /*
         if( vrFade != null )
         {
             return ;
         }
+        */
 
         bool bFinish = false;
         switch( fadeType )
@@ -104,6 +106,7 @@ public class GameFadeManager : Singleton<GameFadeManager> {
         if( vrFade != null )
         {
             vrFade.StartFade((VRFade.VRFadeType)(type), fadeTime);
+            _StartFade(type, fadeTime);
         }
         else
         {

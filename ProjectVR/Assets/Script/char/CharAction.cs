@@ -262,7 +262,7 @@ public class CharAction : MonoBehaviour {
         }
         */
 
-        CheckWorldClip();
+//        CheckWorldClip();
 
         {
             string infoStr = "----------------- King Param\n";
@@ -596,12 +596,14 @@ public class CharAction : MonoBehaviour {
     {
         Vector3 pos = transform.position;
 
-        if( pos.y < 0.0f )
+        if( pos.y < 3.5f )
         {
-            pos.y = 0.0f;
+            pos.y = 3.5f;
+            /*
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
             rb.AddForce(Vector3.zero, ForceMode.VelocityChange);
+            */
         }
 
         transform.position = pos;

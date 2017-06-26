@@ -23,7 +23,7 @@ public class GameSceneManager : Singleton<GameSceneManager> {
 
     private GameObject sceneUpdater;
 
-    public void Awake()
+    new public void Awake()
     {
         Debug.Log("--------------- GameSceneManager Instance - ");
 

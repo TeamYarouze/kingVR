@@ -40,7 +40,7 @@ public class scr_SceneManager : Singleton<scr_SceneManager> {
    
     private int m_vrSettintStep;
 
-    public void Awake()
+    public new void Awake()
     {
         base.Awake();
         DontDestroyOnLoad(this.gameObject);

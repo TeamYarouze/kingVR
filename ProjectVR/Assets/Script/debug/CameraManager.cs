@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VR;
 
 public class CameraManager
 {
@@ -110,15 +111,22 @@ public class CameraManager
         if( socialCamera )
         {
             socialCamera.enabled = true;
-            cameraType = UseCameraType.USE_CAMERA_SOCIAL;
+            if( !VRSettings.enabled )
+            {
+                cameraType = UseCameraType.USE_CAMERA_SOCIAL;
+            }
         }
-        if( freeLookCamera )
+        
+        if( !VRSettings.enabled )
         {
-            freeLookCamera.enabled = false;
-        }
-        if( fpsCamera )
-        {
-            fpsCamera.enabled = false;
+            if( freeLookCamera )
+            {
+                freeLookCamera.enabled = false;
+            }
+            if( fpsCamera )
+            {
+                fpsCamera.enabled = false;
+            }
         }
     }
 
@@ -144,7 +152,14 @@ public class CameraManager
     {
         if( socialCamera )
         {
-            socialCamera.enabled = false;
+            if( VRSettings.enabled )
+            {
+                socialCamera.enabled = true;
+            }
+            else
+            {
+                socialCamera.enabled = false;
+            }
         }
         if( freeLookCamera )
         {

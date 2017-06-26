@@ -6,7 +6,7 @@ using UnityEngine.VR;
 public class UpdateSceneTemplate : UpdateBase {
 
     // ※消さないでください
-    void Awake()
+    new void Awake()
     {
         base.Awake();
     }
@@ -19,7 +19,7 @@ public class UpdateSceneTemplate : UpdateBase {
 	/**
      *  初期化処理です
      */
-	void Start () {
+	new void Start () {
 		// 初期化処理をここに書きます
         // 初期化処理なので実行されるのはシーン開始時の1回だけです
 	}
@@ -27,7 +27,7 @@ public class UpdateSceneTemplate : UpdateBase {
 	/**
      * 毎フレームの更新処理です
      */
-	void Update () {
+	new void Update () {
 		// 毎フレームの更新処理をここに書きます
 	}
 }

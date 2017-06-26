@@ -6,7 +6,7 @@ using UnityEngine.VR;
 public class UpdateLoading : Singleton<UpdateLoading> {
 
     // ※消さないでください
-    void Awake()
+    new void Awake()
     {
         base.Awake();
     }

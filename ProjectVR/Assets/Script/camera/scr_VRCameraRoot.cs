@@ -86,25 +86,30 @@ public class scr_VRCameraRoot : MonoBehaviour {
     {
         MoveExe();
 
-        Vector3 trackingPos = InputTracking.GetLocalPosition(VRNode.CenterEye);
+        /*
+        if( !VRSettings.enabled )
         {
-            string strInfo = "";
-            strInfo += "Tracking Pos:";
-            strInfo += trackingPos.ToString() + "\n";
+            Vector3 trackingPos = InputTracking.GetLocalPosition(VRNode.CenterEye);
+            {
+                string strInfo = "";
+                strInfo += "Tracking Pos:";
+                strInfo += trackingPos.ToString() + "\n";
 
-            Vector3 camPos = Camera.main.transform.position;
-            strInfo += "Camera Pos:";
-            strInfo += camPos.ToString() + Camera.main.name + "\n";
+                Vector3 camPos = Camera.main.transform.position;
+                strInfo += "Camera Pos:";
+                strInfo += camPos.ToString() + Camera.main.name + "\n";
 
-            Vector3 camRootPos = transform.position;
-            strInfo += "CameraRoot Pos:";
-            strInfo += camRootPos.ToString() + "\n";
+                Vector3 camRootPos = transform.position;
+                strInfo += "CameraRoot Pos:";
+                strInfo += camRootPos.ToString() + "\n";
 
-            strInfo += "Raw: " + outhmdPositionRaw.ToString() + "\n";
-            strInfo += "Unity: " + outhmdPositionUnity.ToString() + "\n";
+                strInfo += "Raw: " + outhmdPositionRaw.ToString() + "\n";
+                strInfo += "Unity: " + outhmdPositionUnity.ToString() + "\n";
 
-            scr_GUIText.instance.AddText(strInfo);
+                scr_GUIText.instance.AddText(strInfo);
+            }
         }
+        */
     }
 
     /**

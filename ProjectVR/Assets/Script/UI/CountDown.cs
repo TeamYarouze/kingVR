@@ -11,25 +11,62 @@ public class CountDown : MonoBehaviour {
         get { return bFinish; }
     }
 
+    public bool bLetsBonvoyage;
+    public bool LetsBonyage
+    {
+        get { return bLetsBonvoyage; }
+    }
+
+    public int seCD;
+    private int preCD;
+    public int seBonvoyage;
+    private int preBonvoyage;
+
+    public bool bPlayCD;
+    public bool bPlayBonvyage;
+
+    private AudioSource audioSource;
+    public AudioClip audioCD;
+    public AudioClip audioBonvoyage;
+
 	// Use this for initialization
 	void Start () {
 		
         animator = GetComponent<Animator>();
         bFinish = false;
+
+        bLetsBonvoyage = false;
+
+        seCD = 0;
+        preCD = seCD;
+        seBonvoyage = 0;
+        preBonvoyage = seBonvoyage;
+
+
+        bPlayCD = false;
+        bPlayBonvyage = false;
+
+        audioSource = GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
-
+        PlayCountDownSE();        
+        PlayBonvoyageSE();
 	}
 
 
     public void StartCountDown()
     {
-        animator.SetTrigger("CountDownStart");
-
+        bLetsBonvoyage = false;
+        bPlayCD = false;
+        bPlayBonvyage = false;
         bFinish = false;
+
+        animator.SetTrigger("CountDownStart");
+        PlayCountDownSE(true);
+
         StartCoroutine(IsFinishCountDown());
     }
 
@@ -46,4 +83,28 @@ public class CountDown : MonoBehaviour {
             yield return null;
         }    
     }
+
+    private void PlayCountDownSE(bool bForce = false)
+    {
+
+        if( bPlayCD || bForce )
+        {
+            audioSource.PlayOneShot(audioCD, 1.0f);
+            
+        }
+        bPlayCD = false;
+
+    }
+    
+    private void PlayBonvoyageSE()
+    {        
+
+        if( bPlayBonvyage )
+        {
+            audioSource.PlayOneShot(audioBonvoyage, 1.0f);
+        }
+        bPlayBonvyage = false;
+
+    }
+
 }

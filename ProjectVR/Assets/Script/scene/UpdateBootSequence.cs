@@ -14,13 +14,13 @@ public class UpdateBootSequence : UpdateBase {
     }
 
 	// Use this for initialization
-	void Start () {
+	new void Start () {
 		counter = 0;
         m_step = 0;
 	}
 
 	// Update is called once per frame
-	void Update () {
+	new void Update () {
 
         if( GameFadeManager.Instance.IsFade() )
         {
@@ -31,16 +31,25 @@ public class UpdateBootSequence : UpdateBase {
         {
         case 0:
 
+            m_step++;
+
+            break;
+        case 1:
+
+            m_step++;
+
+            break;
+        case 2:
+
             counter += Time.deltaTime;
 		
             if( counter >= 1.0f )
             {
                 // シーン遷移テスト!!!!!
                 GameSceneManager.Instance.ChangeScene(GameModeData.GAMEMODE.GAME_MODE_TITLE);
-                m_step = 1;
+                m_step = 3;
             }
             break;
-        case 1:
         default:
             break;
         }

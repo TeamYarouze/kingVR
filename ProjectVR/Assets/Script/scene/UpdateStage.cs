@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.VR;
 
 public class UpdateStage : UpdateBase {
 
     private GameObject DustStorm;
-    public ParticleSystemBase particlBase
+    public ParticleSystemBase particleBase
     {
         get { return (DustStorm) ? DustStorm.GetComponent<ParticleSystemBase>() : null; }
     }
@@ -39,8 +40,9 @@ public class UpdateStage : UpdateBase {
 
     private int m_subStep;
 
-    void Awake()
+    new void Awake()
     {
+        base.Awake();
     }
 
     void OnEnable()
@@ -49,13 +51,20 @@ public class UpdateStage : UpdateBase {
         cameraMngr.Initialize();
         GameFadeManager.Instance.SetupVRMode(Camera.main.name);
 
+        if( VRSettings.enabled )
+        {
+            VRManager.Instance.ToggleHMDViewOnMonitor(false);
+//            cameraMngr.EnableSocialCamera();
+        }
+
         m_stage = GameModeData.StageCount;      // ステージ数を設定
         m_counterSec = 0;
         m_frame = 0.0f;
     }
 
 	// Use this for initialization
-	void Start () {
+	new void Start () {
+
         playerObj = GameObject.Find("kings");
         DustStorm = GameObject.Find("DustStorm");
 
@@ -63,7 +72,7 @@ public class UpdateStage : UpdateBase {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	new void Update () {
 
         if( Input.GetButtonDown("R1") )
         {
@@ -84,23 +93,23 @@ public class UpdateStage : UpdateBase {
 
     public void PlayDustStorm(bool bPlay)
     {
-        if( !particlBase ) return;
+        if( !particleBase ) return;
 
         if( bPlay )
         {
-            particlBase.Play();
+            particleBase.Play();
         }
         else
         {
-            particlBase.Stop();
+            particleBase.Stop();
         }
     }
 
     public bool IsPlayDustStorm()
     {
-        if( !particlBase ) return false;
+        if( !particleBase ) return false;
 
-        return particlBase.IsPlay();
+        return particleBase.IsPlay();
     }
 
     private void CountOneFrame()
@@ -140,14 +149,16 @@ public class UpdateStage : UpdateBase {
         {
         case StageState.STATE_PREPARE:
 
-            
-            uiManager.ScrCountDown.StartCountDown();
-            ChangeState( StageState.STATE_READY );
+            if( m_counterSec >= 3 )
+            {
+                uiManager.ScrCountDown.StartCountDown();
+                ChangeState( StageState.STATE_READY );
+            }
 
             break;
         case StageState.STATE_READY:
 
-            if( uiManager.ScrCountDown.IsFinish )
+            if( uiManager.ScrCountDown.LetsBonyage )
             {
                 // 最初は自動で吹っ飛ぶ
                 playerObj.GetComponent<CharAction>().FirstBlowoff();

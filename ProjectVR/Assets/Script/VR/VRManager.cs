@@ -12,7 +12,7 @@ public class VRManager : Singleton<VRManager>
 
     private bool showHmdViewOnMonitor = true; // Set this to 'false' to use the monitor/display as the Social Screen
 
-    void Awake()
+    new void Awake()
     {
         Debug.Log("------------- VRManager Instance");
         base.Awake();
