@@ -12,6 +12,9 @@ public class UpdateStage : UpdateBase {
         get { return (DustStorm) ? DustStorm.GetComponent<ParticleSystemBase>() : null; }
     }
 
+    private GameObject bgmObject;
+    private bool m_bPlayJingleOneShot;
+
     private int m_stage;            // ステージ数
     public int Stage
     {
@@ -67,12 +70,21 @@ public class UpdateStage : UpdateBase {
 
         playerObj = GameObject.Find("kings");
         DustStorm = GameObject.Find("DustStorm");
+        bgmObject = GameObject.Find("BGM");
+
+        m_bPlayJingleOneShot = false;
 
         Assert.IsNotNull(playerObj, "Player Object Is Null!!!!!!!!!!!!!!!!!!!!");    
 	}
 	
 	// Update is called once per frame
 	new void Update () {
+
+        if( GameFadeManager.Instance.IsFade() )
+        {
+            return;
+        }
+
 
         if( Input.GetButtonDown("R1") )
         {
@@ -88,6 +100,8 @@ public class UpdateStage : UpdateBase {
 
         // ステージの状態を更新
         UpdateStageState();
+
+        CountOneFrame();
 	}
 
 
@@ -149,6 +163,12 @@ public class UpdateStage : UpdateBase {
         {
         case StageState.STATE_PREPARE:
 
+            if( !m_bPlayJingleOneShot )
+            {
+                bgmObject.GetComponent<BGMCtrl>().PlayJingle();
+                m_bPlayJingleOneShot = true;
+            }
+
             if( m_counterSec >= 3 )
             {
                 uiManager.ScrCountDown.StartCountDown();
@@ -162,6 +182,8 @@ public class UpdateStage : UpdateBase {
             {
                 // 最初は自動で吹っ飛ぶ
                 playerObj.GetComponent<CharAction>().FirstBlowoff();
+
+                bgmObject.GetComponent<BGMCtrl>().PlayBGM();
 
                 ChangeState(StageState.STATE_INGAME);
             }
@@ -204,8 +226,6 @@ public class UpdateStage : UpdateBase {
         default:
             break;
         }
-
-        CountOneFrame();
     }
 
     //---------------------------------------------------------------
@@ -238,6 +258,8 @@ public class UpdateStage : UpdateBase {
                 */
                 playerObj.GetComponent<CharAction>().ResetPosition(true);
                 uiManager.ScrGoalUI.StopGoalUI();
+
+                m_bPlayJingleOneShot = false;
 
                 GameSceneManager.Instance.StartFadeIn(24);
                 m_subStep = RESET_FADEINWAIT;

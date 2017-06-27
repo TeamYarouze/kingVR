@@ -52,8 +52,8 @@ public class CountDown : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
-        PlayCountDownSE();        
-        PlayBonvoyageSE();
+//        PlayCountDownSE();        
+//        PlayBonvoyageSE();
 	}
 
 
@@ -65,7 +65,7 @@ public class CountDown : MonoBehaviour {
         bFinish = false;
 
         animator.SetTrigger("CountDownStart");
-        PlayCountDownSE(true);
+//        PlayCountDownSE(true);
 
         StartCoroutine(IsFinishCountDown());
     }
@@ -84,26 +84,29 @@ public class CountDown : MonoBehaviour {
         }    
     }
 
-    private void PlayCountDownSE(bool bForce = false)
+    public void PlayCountDownSE()
     {
-
-        if( bPlayCD || bForce )
+        audioSource.PlayOneShot(audioCD, 1.0f);
+        /*
+        if( bPlayCD )
         {
             audioSource.PlayOneShot(audioCD, 1.0f);
             
         }
         bPlayCD = false;
-
+        */
     }
     
-    private void PlayBonvoyageSE()
+    public void PlayBonvoyageSE()
     {        
-
+        audioSource.PlayOneShot(audioBonvoyage, 1.0f);
+        /*
         if( bPlayBonvyage )
         {
             audioSource.PlayOneShot(audioBonvoyage, 1.0f);
         }
         bPlayBonvyage = false;
+        */
 
     }
 

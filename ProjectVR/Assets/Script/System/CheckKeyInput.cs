@@ -157,10 +157,12 @@ public class CheckKeyInput : MonoBehaviour {
         return BUTTON_ID.BTN_INVALID;
     }
 
+    /*
     public void OnGUI()
     {
         GUI.TextField(new Rect(120.0f, 400.0f, 300, 52), "Push:" + Convert.ToString(m_btnPush, 2) + "\n" + 
                                                          "Trigger:" + Convert.ToString(m_btnTrigger, 2) + "\n" +
                                                          "Release:" + Convert.ToString(m_btnRelease, 2) );
     }
+    */
 }

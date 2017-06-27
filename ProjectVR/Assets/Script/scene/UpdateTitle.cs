@@ -33,6 +33,11 @@ public class UpdateTitle : UpdateBase {
 	new void Update () {
 		// 毎フレームの更新処理をここに書きます
 
+        if( GameFadeManager.Instance.IsFade() )
+        {
+            return;
+        }
+
         if( !bNext )
         {
 
