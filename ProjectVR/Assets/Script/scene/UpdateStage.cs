@@ -25,7 +25,7 @@ public class UpdateStage : UpdateBase {
     private GameObject playerObj;
 
     // ステージステート
-    enum StageState
+    public enum StageState
     {
         STATE_PREPARE,
         STATE_READY,
@@ -38,6 +38,10 @@ public class UpdateStage : UpdateBase {
         STATE_NUM,
     };
     private StageState m_state;
+    public StageState CurrentState
+    {
+        get { return m_state; }
+    }
     private int m_counterSec;                  // 汎用カウンター
     private float m_frame;
 
@@ -85,11 +89,12 @@ public class UpdateStage : UpdateBase {
             return;
         }
 
-
+        /*
         if( Input.GetButtonDown("R1") )
         {
             VRManager.Instance.ChangeVRMode();       
         }
+        */
 
         cameraMngr.ChangeCameraMode();
 
@@ -159,6 +164,11 @@ public class UpdateStage : UpdateBase {
     {
         VRUIManager uiManager = cameraMngr.FpsCameraObj.GetComponent<VRUIManager>();
 
+        if( GameSceneManager.Instance.NowLoading )
+        {
+            return;
+        }
+
         switch( m_state )
         {
         case StageState.STATE_PREPARE:
@@ -193,6 +203,7 @@ public class UpdateStage : UpdateBase {
 
             if( playerObj.GetComponent<CharAction>().IsGoal )
             {
+                bgmObject.GetComponent<BGMCtrl>().StopBGM();
                 uiManager.ScrGoalUI.StartGoalUI();
 
                 ChangeState(StageState.STATE_GOAL);

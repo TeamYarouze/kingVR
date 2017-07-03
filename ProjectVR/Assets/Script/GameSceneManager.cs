@@ -21,6 +21,12 @@ public class GameSceneManager : Singleton<GameSceneManager> {
         get { return GameFadeManager.Instance.IsFade(); }
     }
 
+    private bool m_bLoad;
+    public bool NowLoading
+    {
+        get { return m_bLoad; }
+    }
+
     private GameObject sceneUpdater;
 
     new public void Awake()
@@ -45,6 +51,8 @@ public class GameSceneManager : Singleton<GameSceneManager> {
         }
 
         sceneUpdater = GameObject.Find("SceneUpdater");
+
+        m_bLoad = false;
 	}
 	
 	void Update ()
@@ -62,6 +70,7 @@ public class GameSceneManager : Singleton<GameSceneManager> {
     {
         Debug.Log("Change Scene Start [ To: " + GameModeData.GameMode + " From: " + next + " ]");
 
+        m_bLoad = true;
         StartCoroutine(LoadSceneAsync(next));
     }
 
@@ -91,6 +100,8 @@ public class GameSceneManager : Singleton<GameSceneManager> {
         {
             yield return null;
         }
+
+        m_bLoad = false;
 
     }
 

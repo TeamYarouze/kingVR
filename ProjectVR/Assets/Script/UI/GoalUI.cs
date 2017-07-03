@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class GoalUI : MonoBehaviour {
 
+    public AudioClip audioClip;
+    private AudioSource audioSource;
+
     private Animator animator;
 
 	// Use this for initialization
 	void Start () {
 		animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
@@ -24,5 +28,11 @@ public class GoalUI : MonoBehaviour {
     public void StopGoalUI()
     {
         animator.SetTrigger("GoIdle");
+    }
+
+    public void PlayGoalJingle()
+    {
+        audioSource.clip = audioClip;
+        audioSource.Play();
     }
 }

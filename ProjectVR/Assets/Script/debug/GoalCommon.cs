@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VR;
 
 public class GoalCommon : MonoBehaviour {
 
@@ -15,17 +16,22 @@ public class GoalCommon : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
-        if( Input.GetButtonDown("L1") )
+        if( VRSettings.enabled )
         {
-            if( goalRenderer.enabled )
+        }
+        else
+        {
+            if( Input.GetButtonDown("L1") )
             {
-                goalRenderer.enabled = false;
-            }
-            else
-            {
-                goalRenderer.enabled = true;
+                if( goalRenderer.enabled )
+                {
+                    goalRenderer.enabled = false;
+                }
+                else
+                {
+                    goalRenderer.enabled = true;
+                }
             }
         }
-
 	}
 }

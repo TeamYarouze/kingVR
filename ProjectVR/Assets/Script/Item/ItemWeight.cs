@@ -13,12 +13,14 @@ public class ItemWeight : ItemBase {
 
     private bool bButtonOn = false;
 
+    private UpdateStage stageUpdater;
     private AudioSource audioSource;
 
 	// Use this for initialization
 	new void Start () {
 		base.Start();
 
+        stageUpdater = GameObject.Find("SceneUpdater").GetComponent<UpdateStage>();
         audioSource = GetComponent<AudioSource>();
 	}
 	
@@ -26,6 +28,11 @@ public class ItemWeight : ItemBase {
 	new void Update () {
 
         if( !IsAttachedObject() )
+        {
+            return;
+        }
+
+        if( stageUpdater.CurrentState != UpdateStage.StageState.STATE_INGAME )
         {
             return;
         }
@@ -186,10 +193,12 @@ public class ItemWeight : ItemBase {
 
     void OnGUI()
     {
+        /*
         GUI.TextField(new Rect(720.0f, 480.0f, 300, 80), "ReloadTime: " + m_reloadTime + "\n" +
                                                    "SpeedVec: " + objScript.RigidBody.velocity.ToString() + "\n" +
                                                    "Speed : " + objScript.RigidBody.velocity.magnitude + "\n" +  
                                                    "State: " + m_state );
+        */
                                                     
     }
 
