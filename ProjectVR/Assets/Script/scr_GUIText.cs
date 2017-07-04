@@ -70,18 +70,12 @@ public class scr_GUIText : MonoBehaviour {
 
         if( !textObj ) return;
 
-        if( VRSettings.enabled )
+        if( Input.GetButtonDown("L1") )
         {
-            bDraw = false;
+            bDraw = !bDraw;
+            bGUIDraw = !bGUIDraw;
         }
-        else
-        {
-            if( Input.GetButtonDown("L1") )
-            {
-                bDraw = !bDraw;
-                bGUIDraw = !bGUIDraw;
-            }
-        }
+
         /*
         // VRモード時は描画しない
         if( VRSettings.enabled )

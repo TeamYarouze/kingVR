@@ -71,9 +71,6 @@ public class CharAction : MonoBehaviour {
     private GameObject AfterBurner = null;
     private AudioSource audioSource;
 
-    public AudioClip seAfterBurner;
-    public AudioClip seCollision;
-
     private GameObject SceneUpdater = null;
 
     // ゴール判定
@@ -89,9 +86,6 @@ public class CharAction : MonoBehaviour {
     {
         get { return m_bGameOver; }
     }
-
-    private bool    m_bCorrectX;
-    private float   m_diffX;
 
     //---------------------------------------------------------------
     private float elapsedTime;
@@ -145,9 +139,6 @@ public class CharAction : MonoBehaviour {
 
         rocketRot = 180.0f;
 
-        m_bCorrectX = false;
-        m_diffX = 0.0f;
-
         m_bGoal = false;
         m_bGameOver = false;
         
@@ -160,7 +151,7 @@ public class CharAction : MonoBehaviour {
 	void Update ()
     {
         // ロケット回転
-//        RotateRocket();
+        RotateRocket();
 
         ChangeMoveMode();
 
@@ -292,6 +283,11 @@ public class CharAction : MonoBehaviour {
     //---------------------------------------------------------------
     void OnCollisionEnter(Collision collision)
     {
+        /*
+        bBlowOff = false;
+        m_vectorToMove = Vector3.zero;
+        rb.AddForce(m_vectorToMove, ForceMode.VelocityChange);
+        */
 
         GameObject itemObj = null;
 
@@ -302,6 +298,9 @@ public class CharAction : MonoBehaviour {
             itemObj.GetComponent<ItemRocket>().ResetItem();
         }
 
+
+
+        audioSource.Stop();
         PlayAfterBurner(false);
 
         // ゴール処理
@@ -311,13 +310,14 @@ public class CharAction : MonoBehaviour {
 
             m_bGoal = true;
 
-            /*
+
+
             rb.useGravity = false;
             rb.isKinematic = true;
-            */
-//            rb.velocity = m_vectorToMove;
-//            rb.angularVelocity = m_vectorToMove;
-            rb.AddForce(m_vectorToMove, ForceMode.VelocityChange);
+            rb.velocity = m_vectorToMove;
+            rb.angularVelocity = m_vectorToMove;
+
+
            
             if( updater )
             {
@@ -326,30 +326,7 @@ public class CharAction : MonoBehaviour {
                     updater.PlayDustStorm(false);
                 }
             }
-        }
-        else if( collision.gameObject.tag == "CollisionOBJ" )
-        {
 
-            PlaySECollision();
-        }
-    }
-
-    void OnTriggerEnter(Collider collision)
-    {
-        // ゴール処理
-        if( collision.gameObject.name == "Goal" )
-        {
-            Debug.Log("Goooooaaaaallllll !!!!!!!!!!");
-
-            m_bGoal = true;
-           
-            if( updater )
-            {
-                if( updater.IsPlayDustStorm() )
-                {
-                    updater.PlayDustStorm(false);
-                }
-            }
         }
     }
 
@@ -363,46 +340,8 @@ public class CharAction : MonoBehaviour {
         // 加速度の適用
 
         // 重力の適用
-        //        ApplyGravity();
+//        ApplyGravity();
 
-        float velocity = rb.velocity.magnitude;
-        Vector3 currentPos = transform.position;
-
-        // x軸のずれを修正
-        if( !m_bCorrectX )
-        {
-            
-            float xDiff = 2500.0f - currentPos.x;
-    
-            if( xDiff > 0.0f || xDiff < 0.0f )
-            {        
-                m_diffX = xDiff;
-                m_bCorrectX = true;
-                elapsedTime = 0.0f;
-            }
-        }
-
-        if( m_bCorrectX && (int)velocity > 0 &&  currentPos.y > 20.0f )
-        {
-            elapsedTime += Time.fixedDeltaTime;
-            float diffLerp = Mathf.Lerp(m_diffX, 0.0f, (60.0f*elapsedTime) / 60.0f );
-            
-            diffLerp /= velocity;
-            Vector3 vCorrect = Vector3.zero;
-            vCorrect.x = diffLerp;
-                        
-            rb.AddForce(vCorrect, ForceMode.Force);
-            
-            if( elapsedTime >= 1.0f )
-            {
-                elapsedTime = 0.0f;
-                m_bCorrectX = false;
-            }
-        }
-
-
-
-        /*
         elapsedTime += Time.fixedDeltaTime;
         if( elapsedTime >= 1.0f )
         {
@@ -411,7 +350,6 @@ public class CharAction : MonoBehaviour {
             elapsedTime = 0;
             startPos = transform.position;
         }
-        */
     }
     
     //---------------------------------------------------------------
@@ -658,15 +596,14 @@ public class CharAction : MonoBehaviour {
     {
         Vector3 pos = transform.position;
 
-        if( pos.x >= 2600.0f )
+        if( pos.y < 3.5f )
         {
-            pos.x = 2600.0f;
-            m_bCorrectX = false;
-        }
-        if( pos.x <= 2400.0f )
-        {
-            pos.x = 2400.0f;
-            m_bCorrectX = false;
+            pos.y = 3.5f;
+            /*
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            rb.AddForce(Vector3.zero, ForceMode.VelocityChange);
+            */
         }
 
         transform.position = pos;
@@ -698,14 +635,12 @@ public class CharAction : MonoBehaviour {
         if( bFire )
         {
             AfterBurner.GetComponent<ParticleSystemBase>().Play();
-//            audioSource.Play();
-            PlaySEAfterBurner();
+            audioSource.Play();
         }
         else
         {
             AfterBurner.GetComponent<ParticleSystemBase>().Stop();
-//            audioSource.Stop();
-            StopSE();
+            audioSource.Stop();
         }
     }
 
@@ -717,24 +652,5 @@ public class CharAction : MonoBehaviour {
         }
 
         return AfterBurner.GetComponent<ParticleSystemBase>().IsPlay();
-    }
-
-    private void PlaySEAfterBurner()
-    {
-        audioSource.clip = seAfterBurner;
-        audioSource.loop = true;
-        audioSource.Play();
-    }
-
-    private void PlaySECollision()
-    {
-        audioSource.clip = seCollision;
-        audioSource.loop = false;
-        audioSource.Play();
-    }
-
-    private void StopSE()
-    {
-        audioSource.Stop();
     }
 }
