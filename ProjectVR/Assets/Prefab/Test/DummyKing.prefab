@@ -151,4 +151,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animSpeed: 1.5
   moveSpeed: 1
-  BASE_GRAVITY: 10
