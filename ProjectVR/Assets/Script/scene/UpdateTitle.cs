@@ -40,7 +40,6 @@ public class UpdateTitle : UpdateBase {
 
         m_step = 0;
         bNext = false;
-
         bgm.Play();
 	}
 	

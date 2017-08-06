@@ -11,7 +11,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: DefaultCompany
-  productName: ProjectVR
+  productName: ButtobiKING
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13333334, g: 0.17254902, b: 0.21176471, a: 1}
@@ -47,7 +47,7 @@ PlayerSettings:
   defaultScreenWidthWeb: 960
   defaultScreenHeightWeb: 600
   m_StereoRenderingPath: 0
-  m_ActiveColorSpace: 1
+  m_ActiveColorSpace: 0
   m_MTRendering: 1
   m_MobileMTRendering: 0
   m_StackTraceTypes: 010000000100000001000000010000000100000001000000
@@ -260,7 +260,7 @@ PlayerSettings:
   ps4NPTitleSecret: 
   ps4NPTrophyPackPath: 
   ps4ParentalLevel: 1
-  ps4ContentID: ED1633-NPXX51362_00-0000000000000000
+  ps4ContentID: ED1633-NPXX00003_00-0000000000000000
   ps4Category: 0
   ps4MasterVersion: 01.00
   ps4AppVersion: 01.00
@@ -402,7 +402,6 @@ PlayerSettings:
     7: CROSS_PLATFORM_INPUT;MOBILE_INPUT
     14: MOBILE_INPUT
     17: MOBILE_INPUT
-    19: GAIA_PRESENT
     20: MOBILE_INPUT
     22: MOBILE_INPUT
   platformArchitecture: {}
@@ -489,5 +488,5 @@ PlayerSettings:
     UNet: 1
   cloudProjectId: 4abd17ec-541e-424f-8b1d-ede5b3eff7a9
   projectName: ProjectVR
-  organizationId: yuya-suzuki-614f6da6-77ea-4c03-87ab-9cd7d583efb8
+  organizationId: yuya-suzuki-5f61646d-ff03-4bff-b23a-3d63b54e5aac
   cloudEnabled: 0
