@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 #if UNITY_PS4
 using UnityEngine.PS4;
-#endif      //
+#endif  //
 
 public class ItemRocket : ItemBase {
 
@@ -53,28 +53,17 @@ public class ItemRocket : ItemBase {
 
     private EffectManager effectMngr = null;
  
-    private AudioSource audioSource;
-
-    public AudioClip seExplosion;
-    public AudioClip seAfterBurner;
-    public AudioClip seCharge;
-
-    private bool m_bChargeStart;
-
-    private UpdateStage stageUpdater;
+    private AudioSource[] audioSource;
 
     public enum RocketSE
     {
         SE_EXPLOSION,
         SE_AFTER_BURNER,
-        SE_CHARGE,
     };
 
 	// Use this for initialization
 	new public void Start () {
         base.Start();
-
-        stageUpdater = GameObject.Find("SceneUpdater").GetComponent<UpdateStage>();
 
         m_Angle = RocketInitialAngle;
         m_Power = RocketInitialPower;
@@ -90,8 +79,7 @@ public class ItemRocket : ItemBase {
 
         effectMngr = GameObject.Find("EffectManager").GetComponent<EffectManager>();
 
-        audioSource = GetComponent<AudioSource>();
-        m_bChargeStart = false;
+        audioSource = GetComponents<AudioSource>();
 	}
 	
 	// Update is called once per frame
@@ -101,12 +89,6 @@ public class ItemRocket : ItemBase {
         {
             return;
         }
-
-        if( stageUpdater.CurrentState != UpdateStage.StageState.STATE_INGAME )
-        {
-            return;
-        }
-        
 
         UpdateReloadTime();
 
@@ -227,24 +209,16 @@ public class ItemRocket : ItemBase {
 
         if( Input.GetButton("Circle") )
         {
-            if( !m_bChargeStart )
-            {
-                PlayCharge();
-                m_bChargeStart = true;
-            }
-
             m_rocketPower += 0.01f;
             if( m_rocketPower >= 1.0f ) m_rocketPower = 1.0f;
 
 #if UNITY_PS4
-            PS4Input.PadSetVibration(0, 0, (int)(255 * m_rocketPower));
+            PS4Input.PadSetVibration(0, 0, (int)(m_rocketPower*255));
 #endif  //
+
         }
         else if( Input.GetButtonUp("Circle") )
         {
-            StopSE();
-            m_bChargeStart = false;
-
             Quaternion camRot = scrCamera.hmdOrientation;
             float power = 0.0f;
             if( m_state == EItemUseState.ITEM_STAT_READY )
@@ -275,8 +249,8 @@ public class ItemRocket : ItemBase {
             base.OnFire();
 
 #if UNITY_PS4
-            PS4Input.PadSetVibration(0, 255, 0);
-#endif  //
+            PS4Input.PadSetVibration(0, 128, 0);
+#endif  
 
             return true;
         }
@@ -379,10 +353,6 @@ public class ItemRocket : ItemBase {
         m_state = EItemUseState.ITEM_STAT_USING;
 
         base.OnFire();
-
-#if UNITY_PS4
-            PS4Input.PadSetVibration(0, 255, 0);
-#endif  //
     }
 
 
@@ -391,31 +361,16 @@ public class ItemRocket : ItemBase {
         @brief      SE関係
     */
     //---------------------------------------------------------------
-    private void Play(RocketSE type)
+    public void Play(RocketSE type)
     {
-
-        if( type == RocketSE.SE_EXPLOSION )
-        {
-            audioSource.clip = seExplosion;
-        }
-        else if( type == RocketSE.SE_AFTER_BURNER )
-        {
-            audioSource.clip = seAfterBurner;
-        }
-        else if( type == RocketSE.SE_CHARGE )
-        {
-            audioSource.clip = seCharge;
-        }
-        else
+        int typeID = (int)type;
+        int len = audioSource.Length;
+        if( typeID >= len )
         {
             return;
         }
-        audioSource.Play();         
-    }
-
-    private void StopSE()
-    {
-        audioSource.Stop();
+        
+        audioSource[typeID].Play();
     }
 
     /**
@@ -434,26 +389,16 @@ public class ItemRocket : ItemBase {
         Play(RocketSE.SE_AFTER_BURNER);
     }
 
-    /**
-     *  ロケットチャージSE
-     */
-     public void PlayCharge()
-    {
-        Play(RocketSE.SE_CHARGE);
-    }
-
 
     //-----------------------------------------------------------------
     void OnGUI()
     {
-        /*
         GUI.TextField(new Rect(720.0f, 300.0f, 300, 180), "ReloadTime: " + m_reloadTime + "\n" +
                                                    "SpeedVec: " + objScript.RigidBody.velocity.ToString() + "\n" +
                                                    "Speed : " + objScript.RigidBody.velocity.magnitude + "\n" +  
                                                    "State: " + m_state + "\n" +  
                                                    "RocketPower:" + m_rocketPower + "\n" +
                                                    "Rot:" + scrCamera.hmdOrientation.ToString() );
-        */
                                                     
     }
 }

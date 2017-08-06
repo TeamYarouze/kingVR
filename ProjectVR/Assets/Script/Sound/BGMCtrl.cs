@@ -22,21 +22,21 @@ public class BGMCtrl : MonoBehaviour {
 
     public void PlayBGM()
     {
-        StopBGM();
+        Stop();
 
         audioSource.clip = bgm;
         audioSource.loop = true;
         audioSource.Play();
     }
 
-    public void StopBGM()
+    public void Stop()
     {
         audioSource.Stop();
     }
 
     public void PlayJingle()
     {
-        StopBGM();
+        Stop();
 
         audioSource.clip = jingle;
         audioSource.loop = false;

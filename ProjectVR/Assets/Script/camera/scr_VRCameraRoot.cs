@@ -78,9 +78,7 @@ public class scr_VRCameraRoot : MonoBehaviour {
             cameraHeight = 2.3f;
         }
 
-#if UNITY_PS4
         UpdateHmdPosition();
-#endif  //
 
 	}
 
@@ -121,8 +119,8 @@ public class scr_VRCameraRoot : MonoBehaviour {
     {
         if( !king ) return;
 
-//        float vertical = Input.GetAxis("Vertical");      
-//        offsetPos.z += (-1.0f * (vertical * GameDefine.FPSDeltaScale()));
+        float vertical = Input.GetAxis("Vertical");      
+        offsetPos.z += (-1.0f * (vertical * GameDefine.FPSDeltaScale()));
 
         Vector3 kingPos = king.transform.position;
         Vector3 objPos = transform.position;
