@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_PS4
+using UnityEngine.PS4;
+#endif      //
 
 public class ItemRocket : ItemBase {
 
@@ -232,6 +235,10 @@ public class ItemRocket : ItemBase {
 
             m_rocketPower += 0.01f;
             if( m_rocketPower >= 1.0f ) m_rocketPower = 1.0f;
+
+#if UNITY_PS4
+            PS4Input.PadSetVibration(0, 0, (int)(255 * m_rocketPower));
+#endif  //
         }
         else if( Input.GetButtonUp("Circle") )
         {
@@ -266,6 +273,10 @@ public class ItemRocket : ItemBase {
             m_state = EItemUseState.ITEM_STAT_USING;
 
             base.OnFire();
+
+#if UNITY_PS4
+            PS4Input.PadSetVibration(0, 255, 0);
+#endif  //
 
             return true;
         }
@@ -368,6 +379,10 @@ public class ItemRocket : ItemBase {
         m_state = EItemUseState.ITEM_STAT_USING;
 
         base.OnFire();
+
+#if UNITY_PS4
+            PS4Input.PadSetVibration(0, 255, 0);
+#endif  //
     }
 
 

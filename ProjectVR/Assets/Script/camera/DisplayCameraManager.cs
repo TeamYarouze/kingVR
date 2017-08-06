@@ -26,12 +26,29 @@ public class DisplayCameraManager : MonoBehaviour {
     public float Angle_Yaw { get { return angle_yaw; } }
     public float Anble_Pitch { get { return angle_pitch; } }
 
+    private struct CameraDefaultData
+    {
+//        public float yaw;
+//        public float pitch;
+        public float fov;
+        public Quaternion rotation;
+    };
+    CameraDefaultData[] defData = new CameraDefaultData[CAMERA_NUM];
 
 	// Use this for initialization
 	void Start () {
 		
         m_camIndex = 0;
         ChangeDisplayCamera();
+
+        for(int i = 0; i < CAMERA_NUM; i++)
+        {
+ //           defData[i].yaw = displayCamera[i].GetComponent<Camera>().transform.rotation.eulerAngles.y;
+ //           defData[i].pitch = displayCamera[i].GetComponent<Camera>().transform.rotation.eulerAngles.x;
+            defData[i].fov = displayCamera[i].GetComponent<Camera>().fieldOfView;
+            defData[i].rotation = displayCamera[i].GetComponent<Camera>().transform.rotation;
+        }
+
 	}
 	
 	// Update is called once per frame
@@ -44,13 +61,13 @@ public class DisplayCameraManager : MonoBehaviour {
 
 
         float lh = Input.GetAxis("Horizontal");
-        if( lh > -0.2f && lh < 0.2f ) lh = 0.0f;
+        if( lh > -0.1f && lh < 0.1f ) lh = 0.0f;
         float lv = Input.GetAxis("Vertical");
-        if( lv > -0.2f && lv < 0.2f ) lv = 0.0f;
+        if( lv > -0.1f && lv < 0.1f ) lv = 0.0f;
         float rh = Input.GetAxis("Horizontal2");
-        if( rh > -0.2f && rh < 0.2f ) rh = 0.0f;
+        if( rh > -0.1f && rh < 0.1f ) rh = 0.0f;
         float rv = Input.GetAxis("Vertical2");
-        if( rv > -0.2f && rv < 0.2f ) rv = 0.0f;
+        if( rv > -0.1f && rv < 0.1f ) rv = 0.0f;
 
         if( m_camera )
         {
@@ -155,6 +172,19 @@ public class DisplayCameraManager : MonoBehaviour {
 
         m_camera.fieldOfView = fov;
 
+    }
+
+    public void OnEasyReset()
+    {
+
+        for(int i = 0; i < CAMERA_NUM; i++)
+        {
+            displayCamera[i].GetComponent<Camera>().fieldOfView = defData[i].fov;
+            displayCamera[i].GetComponent<Camera>().transform.rotation = defData[i].rotation;
+        }
+
+        m_camIndex = 0;
+        ChangeDisplayCamera();
     }
 
     /*

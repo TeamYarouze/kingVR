@@ -23,6 +23,7 @@ public class UpdateStage : UpdateBase {
     }
 
     private GameObject playerObj;
+    private GameObject socicalCamRoot;
 
     // ステージステート
     public enum StageState
@@ -75,6 +76,7 @@ public class UpdateStage : UpdateBase {
         playerObj = GameObject.Find("kings");
         DustStorm = GameObject.Find("DustStorm");
         bgmObject = GameObject.Find("BGM");
+        socicalCamRoot = GameObject.Find("SocialCameraRoot");
 
         m_bPlayJingleOneShot = false;
 
@@ -269,6 +271,7 @@ public class UpdateStage : UpdateBase {
                 */
                 playerObj.GetComponent<CharAction>().ResetPosition(true);
                 uiManager.ScrGoalUI.StopGoalUI();
+                socicalCamRoot.GetComponent<DisplayCameraManager>().OnEasyReset();
 
                 m_bPlayJingleOneShot = false;
 
